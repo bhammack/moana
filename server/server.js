@@ -26,17 +26,16 @@ const app = express();
 
 app.use(bodyParser.json());                                   // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));          // parse application/x-www-form-urlencoded
-//app.use(express.static(path.join(__dirname, '../client/dist')));        // set the static files location (/public/js will be /js for clients)
-app.use('/static', express.static(path.join(__dirname, '../client/static')));        // set the static files location (/public/js will be /js for clients)
 
-
-
+// Node modules javascript files ==========================================================================================================
+//app.use('/scripts', express.static(path.join(__dirname, '../node_modules/vue/dist/'))); // old way for reference
+app.use('/js', express.static('./node_modules/vue/dist/'));
+app.use('/js', express.static('./node_modules/mqtt/dist/'));
+app.use('/js', express.static('./node_modules/axios/dist/'));
 
 // Static routes and content ==============================================================================================================
-//app.use('/scripts', express.static(path.join(__dirname, '../node_modules/vue/dist/'))); // old way for reference
-app.use('/scripts', express.static('./node_modules/vue/dist/'));
-app.use('/scripts', express.static('./node_modules/mqtt/dist/'));
-app.use('/scripts', express.static('./node_modules/axios/dist/'));
+// This includes js, css, and content folders.
+app.use('/', express.static('./client/dist/'));
 
 // API configuration ======================================================================================================================
 const api = require('./routes/api');                   // Get our API router object.
