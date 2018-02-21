@@ -17,6 +17,15 @@
 	<script src="/scripts/axios.min.js"></script>
 	<script src="/scripts/mqtt.min.js"></script>
 	<script>
+		// test of mqtt
+		var client = mqtt.connect("ws://broker.hivemq.com:8000");
+		client.subscribe('testsocket2');
+
+		client.on('message', function(topic, payload) {
+			console.log([topic, payload].join(": "));
+		})
+	</script>
+	<script>
 	var app = new Vue({
 	  el: '#app',
 	  data: {

@@ -37,7 +37,6 @@ app.use('/static', express.static(path.join(__dirname, '../client/static')));   
 app.use('/scripts', express.static('./node_modules/vue/dist/'));
 app.use('/scripts', express.static('./node_modules/mqtt/dist/'));
 app.use('/scripts', express.static('./node_modules/axios/dist/'));
-app.use('/scripts', express.static('./node_modules/socket.io-client/dist/'));
 
 // API configuration ======================================================================================================================
 const api = require('./routes/api');                   // Get our API router object.
