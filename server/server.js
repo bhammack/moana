@@ -30,8 +30,14 @@ app.use(bodyParser.urlencoded({ extended: true }));          // parse applicatio
 app.use('/static', express.static(path.join(__dirname, '../client/static')));        // set the static files location (/public/js will be /js for clients)
 
 
-app.use('/scripts', express.static(path.join(__dirname, '../client/node_modules/vue/dist/')));
-app.use('/scripts', express.static(path.join(__dirname, '../client/node_modules/axios/dist/')));
+
+
+// Static routes and content ==============================================================================================================
+//app.use('/scripts', express.static(path.join(__dirname, '../node_modules/vue/dist/'))); // old way for reference
+app.use('/scripts', express.static('./node_modules/vue/dist/'));
+app.use('/scripts', express.static('./node_modules/mqtt/dist/'));
+app.use('/scripts', express.static('./node_modules/axios/dist/'));
+app.use('/scripts', express.static('./node_modules/socket.io-client/dist/'));
 
 // API configuration ======================================================================================================================
 const api = require('./routes/api');                   // Get our API router object.
