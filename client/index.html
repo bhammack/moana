@@ -6,7 +6,34 @@
     <title>MOANA</title>
   </head>
   <body>
-    <!-- Do not modify this file -->
-    <div id="app"></div>
+	<div id="app">{{ message }}</div>
+  
+  
+  
+	<script src="/scripts/axios.min.js"></script>
+	<script src="/scripts/vue.min.js"></script>
+	<script>
+	var app = new Vue({
+	  el: '#app',
+	  data: {
+		// model members here
+		message: 'Hello Vue!'
+	  },
+	  methods: {
+		test: function() {
+		
+		},
+		test2: (popcorn) => {
+			
+		}
+	  },
+	  beforeMount: function() {
+		// funciton to use when trying to initially load data on app start.
+	  
+	  }
+	  
+	})
+	
+	</script>
   </body>
 </html>

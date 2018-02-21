@@ -27,7 +27,11 @@ const app = express();
 app.use(bodyParser.json());                                   // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));          // parse application/x-www-form-urlencoded
 //app.use(express.static(path.join(__dirname, '../client/dist')));        // set the static files location (/public/js will be /js for clients)
-app.use(express.static(path.join(__dirname, '../client/static')));        // set the static files location (/public/js will be /js for clients)
+app.use('/static', express.static(path.join(__dirname, '../client/static')));        // set the static files location (/public/js will be /js for clients)
+
+
+app.use('/scripts', express.static(path.join(__dirname, '../client/node_modules/vue/dist/')));
+app.use('/scripts', express.static(path.join(__dirname, '../client/node_modules/axios/dist/')));
 
 // API configuration ======================================================================================================================
 const api = require('./routes/api');                   // Get our API router object.
