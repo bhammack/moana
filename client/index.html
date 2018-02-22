@@ -6,12 +6,9 @@
     <title>MOANA</title>
   </head>
   <body>
-	<div id="app">{{ message }}</div>
-	
-	
-
-
-  
+		<main>
+				<div id="app">{{ message }}</div>
+		</main>
   <!-- Js dependencies -->	
 	<script src="/js/vue.min.js"></script>
 	<script src="/js/axios.min.js"></script>
@@ -20,11 +17,32 @@
 	<script>
 		// test of mqtt
 		//var client = mqtt.connect("ws://broker.hivemq.com:8000");
-		var client = mqtt.connect("mqtt://broker.hivemq.com:1883");
+		var client = mqtt.connect("ws://broker.hivemq.com:8000");
 
-		client.subscribe('testsocket2');
+		client.on('connect', (connack) => {
 
-		client.on('message', function(topic, payload) {
+		});
+
+		client.on('reconnect', () => {
+
+		});
+
+		client.on('close', () => {
+
+		});
+
+		client.on('offline', () => {
+
+		});
+
+		client.on('error', (error) => {
+			console.log(error);
+			client.end();
+		});
+
+		//client.subscribe('testsocket2');
+
+		client.on('message', (topic, payload) => {
 			console.log([topic, payload].join(": "));
 		})
 	</script>
@@ -49,7 +67,6 @@
 	  }
 	  
 	})
-	
 	</script>
   </body>
 </html>

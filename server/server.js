@@ -6,26 +6,27 @@ const bodyParser    = require('body-parser');                 // pull informatio
 const mongoose      = require('mongoose');                    // for interactions with mongodb
 const morgan        = require('morgan');                      // log requests to the console
 
-// Mongoose configuration =================================================================================================================
-var database        = require('./config/database');           // load database.js exports object
+// Custom includes ========================================================================================================================
+const api           = require('./routes/api');                // Get our API router object.
+const database        = require('./config/database');           // load database.js exports object
 
 // ES6 promise returned from connect. .then(resolve, reject);
-mongoose.connect(database.url, {}).then(  
+mongoose.connect(database.url, {}).then(
   () => { 
     console.log('mongoose connected');
-  }, // connection ready to use.
-  err => {
+  }, 
+  (err) => {
 	console.log('unable to connect to mongo.db instance');
     //console.log(err);
   }
 );
 
 // Express configuration ==================================================================================================================
-const port = process.env.PORT || '3000';                      // Get port from environment and store in Express.
 const app = express();
-
+const port = process.env.PORT || '3000';                      // Get port from environment and store in Express.
+app.set('port', port);
 app.use(bodyParser.json());                                   // parse application/json
-app.use(bodyParser.urlencoded({ extended: true }));          // parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));           // parse application/x-www-form-urlencoded
 
 // Node modules javascript files ==========================================================================================================
 //app.use('/scripts', express.static(path.join(__dirname, '../node_modules/vue/dist/'))); // old way for reference
@@ -38,7 +39,6 @@ app.use('/js', express.static('./node_modules/axios/dist/'));
 app.use('/', express.static('./client/dist/'));
 
 // API configuration ======================================================================================================================
-const api = require('./routes/api');                   // Get our API router object.
 app.use('/api', api);                                         // Set our api routes
 
 // Express Routes =========================================================================================================================
@@ -47,7 +47,6 @@ app.get('*', (req, res) => {                                  // Catch all other
 });
 
 // Server start ===========================================================================================================================
-app.set('port', port);
 const server = http.createServer(app);                                      // Create HTTP server.
 server.listen(port, () => {
   console.log(`Server running on localhost:${port}`);
