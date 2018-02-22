@@ -8,7 +8,7 @@ const morgan        = require('morgan');                      // log requests to
 
 // Custom includes ========================================================================================================================
 const api           = require('./routes/api');                // Get our API router object.
-const database        = require('./config/database');           // load database.js exports object
+const database      = require('./config/database');           // load database.js exports object
 
 // ES6 promise returned from connect. .then(resolve, reject);
 mongoose.connect(database.url, {}).then(
@@ -30,6 +30,8 @@ app.use(bodyParser.urlencoded({ extended: true }));           // parse applicati
 
 // Node modules javascript files ==========================================================================================================
 //app.use('/scripts', express.static(path.join(__dirname, '../node_modules/vue/dist/'))); // old way for reference
+app.use('/js', express.static('./node_modules/jquery/dist/'));
+app.use('/js', express.static('./node_modules/popper.js/dist/umd/'));
 app.use('/js', express.static('./node_modules/vue/dist/'));
 app.use('/js', express.static('./node_modules/mqtt/dist/'));
 app.use('/js', express.static('./node_modules/axios/dist/'));
@@ -37,6 +39,7 @@ app.use('/js', express.static('./node_modules/axios/dist/'));
 // Static routes and content ==============================================================================================================
 // This includes js, css, and content folders.
 app.use('/', express.static('./client/dist/'));
+app.use('/', express.static('./node_modules/bootstrap/dist/'));
 
 // API configuration ======================================================================================================================
 app.use('/api', api);                                         // Set our api routes
