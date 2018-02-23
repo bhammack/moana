@@ -3,76 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-		<title>MOANA</title>
-		<link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>client</title>
+	<!-- don't modify this file -->
   </head>
   <body>
-		<main>
-				<div id="app">
-					<h1>{{ message }}</h1>
-					<app-navbar></app-navbar>
-				</div>
-		</main>
-  <!-- Js dependencies -->	
-	<script src="/js/vue.js"></script>
-	<script src="/js/axios.min.js"></script>
-	<script src="/js/mqtt.min.js"></script>
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/test.js"></script>
-	<script src="/js/popper.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script>
-		// test of mqtt
-		//var client = mqtt.connect("ws://broker.hivemq.com:8000");
-		var client = mqtt.connect("ws://broker.hivemq.com:8000");
-
-		client.on('connect', (connack) => {
-			//client.subscribe('testsocket2');
-		});
-
-		client.on('reconnect', () => {
-
-		});
-
-		client.on('close', () => {
-
-		});
-
-		client.on('offline', () => {
-
-		});
-
-		client.on('error', (error) => {
-			console.log(error);
-			client.end();
-		});
-
-
-		client.on('message', (topic, payload) => {
-			console.log([topic, payload].join(": "));
-		})
-	</script>
-	<script>
-	var app = new Vue({
-	  el: '#app',
-	  data: {
-		// model members here
-		message: 'Hello Vue!'
-	  },
-	  methods: {
-		test: function() {
-		
-		},
-		test2: (popcorn) => {
-			
-		}
-	  },
-	  beforeMount: function() {
-		// funciton to use when trying to initially load data on app start.
-	  
-	  }
-	  
-	})
-	</script>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
   </body>
 </html>

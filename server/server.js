@@ -30,23 +30,24 @@ app.use(bodyParser.urlencoded({ extended: true }));           // parse applicati
 
 // Node modules javascript files ==========================================================================================================
 //app.use('/scripts', express.static(path.join(__dirname, '../node_modules/vue/dist/'))); // old way for reference
-app.use('/js', express.static('./node_modules/jquery/dist/'));
-app.use('/js', express.static('./node_modules/popper.js/dist/umd/'));
-app.use('/js', express.static('./node_modules/vue/dist/'));
-app.use('/js', express.static('./node_modules/mqtt/dist/'));
-app.use('/js', express.static('./node_modules/axios/dist/'));
+//app.use('/js', express.static('./node_modules/jquery/dist/'));
+//app.use('/js', express.static('./node_modules/popper.js/dist/umd/'));
+//app.use('/js', express.static('./node_modules/vue/dist/'));
+//app.use('/js', express.static('./node_modules/mqtt/dist/'));
+//app.use('/js', express.static('./node_modules/axios/dist/'));
 
 // Static routes and content ==============================================================================================================
 // This includes js, css, and content folders.
-app.use('/', express.static('./client/dist/'));
-app.use('/', express.static('./node_modules/bootstrap/dist/'));
+app.use('/', express.static(path.join(__dirname, '../client/dist')));        // set the static files location (/public/js will be /js for clients)
+//app.use('/', express.static('./client/dist/'));
+//app.use('/', express.static('./node_modules/bootstrap/dist/'));
 
 // API configuration ======================================================================================================================
 app.use('/api', api);                                         // Set our api routes
 
 // Express Routes =========================================================================================================================
 app.get('*', (req, res) => {                                  // Catch all other routes and return the index file
-  res.sendFile(path.join(__dirname, '../client/index.html'));
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 // Server start ===========================================================================================================================
