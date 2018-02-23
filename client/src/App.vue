@@ -1,7 +1,14 @@
 <template>
   <div id="vue-app">
-    <app-navbar></app-navbar>
-    <router-view/>
+    <header>
+      <app-navbar></app-navbar>
+    </header>
+    <main>
+      <router-view></router-view>      
+    </main>
+    <footer>
+      
+    </footer>
   </div>
 </template>
 

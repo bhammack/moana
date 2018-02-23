@@ -1,19 +1,17 @@
 <template>
-<nav><div class="alert alert-primary" role="alert">
-  This is a primary alert—check it out!
-</div></nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">MOANA</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <!-- <b-navbar toggleable="md" type="dark" fixed="top" variant="primary">
-        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-        <b-navbar-brand href="/#/">MOANA</b-navbar-brand>
-        <b-collapse is-nav id="nav_collapse">
-            <b-navbar-nav>
-                <b-nav-item href="/#/about">About</b-nav-item>
-                <b-nav-item href="/#/cockpit">Cockpit</b-nav-item>
-                <b-nav-item href="/#/records">Records</b-nav-item>
-            </b-navbar-nav>
-        </b-collapse>
-    </b-navbar> -->
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="#/cockpit">Cockpit</a></li>
+      <li class="nav-item"><a class="nav-link" href="#/records">Records</a></li>
+    </ul>
+  </div>
+</nav>
 </template>
 <script>
 
