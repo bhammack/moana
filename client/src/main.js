@@ -8,10 +8,12 @@ import router from './router'
 
 // Import bootstrap js
 import 'bootstrap'
-
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css'
 //import '../static/bootswatch-flatly.min.css'
+
+import mqtt from 'async-mqtt'
+import axios from 'axios'
 
 Vue.config.productionTip = false
 
@@ -23,3 +25,12 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+
+
+
+var client = mqtt.connect('mqtt://test.mosquitto.org')
+
+// client.on('connect').then(function() {
+//   console.log('success')
+// })
