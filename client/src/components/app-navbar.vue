@@ -7,6 +7,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="/#/">Home</a></li>      
       <li class="nav-item"><a class="nav-link" href="/#/cockpit">Cockpit</a></li>
       <li class="nav-item"><a class="nav-link" href="/#/records">Records</a></li>
       <li class="nav-item"><a class="nav-link" href="/#/about">About</a></li>
@@ -15,5 +16,4 @@
 </nav>
 </template>
 <script>
-
 </script>
