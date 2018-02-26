@@ -7,9 +7,8 @@ import App from './App';
 import router from './router';
 
 // Import bootstrap js
-import 'bootstrap';
-// Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 //import '../static/bootswatch-flatly.min.css'
 
 //import $ from 'jquery';

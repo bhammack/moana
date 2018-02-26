@@ -7,6 +7,8 @@
                 <thead>
                     <tr>
                         <th>Timestamp</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
                         <th>Altitude</th>
                         <th>Temperature</th>
                         <th>Power</th>
