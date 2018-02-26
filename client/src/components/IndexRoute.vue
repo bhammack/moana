@@ -15,11 +15,17 @@
                 <hr>
                 <h1>MOANA</h1>
                 <h2>Mobile Operational Assistance for Navigation Appropriations</h2>
-                <i class="fa fa-user"></i>
                 <hr>
                 <div>
-                <button type="button" class="btn btn-primary float-left" data-toggle="tooltip" data-placement="top" title="The operator view provides the ability for the user to send control signals to the quadcopter">Operator Cockpit</button>
-                <button type="button" class="btn btn-primary float-right" data-toggle="tooltip" data-placement="top" title="The spectator view provides a read-only interface for viewing quadcopter telemetry data">Spectator Cockpit</button>
+                <button type="button" class="btn btn-lg btn-primary float-left" data-toggle="tooltip" data-placement="top" title="The operator view provides the ability for the user to send control signals to the quadcopter">
+                    <i class="fa fa-fighter-jet"></i>
+                    Operator Cockpit
+                </button>
+                <button type="button" class="btn btn-lg btn-primary float-right" data-toggle="tooltip" data-placement="top" 
+                    title="The spectator view provides a read-only interface for viewing quadcopter telemetry data">
+                    <i class="fa fa-eye"></i>
+                    Spectator Cockpit
+                </button>
                 </div>
             </div>
         </div>
