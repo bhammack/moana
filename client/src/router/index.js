@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import IndexView from '@/components/IndexView'
+import HomeView from '@/components/HomeView'
 import CockpitView from '@/components/CockpitView'
 import RecordsView from '@/components/RecordsView'
 import AboutView from '@/components/AboutView'
@@ -12,27 +12,26 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'ugg',
-      component: IndexView
+      component: HomeView
+    },
+    {
+      path: '/home',
+      component: HomeView
     },
     {
       path: '/api',
-      name: 'Api',
       component: ApiView
     },
     {
       path: '/cockpit',
-      name: 'Cockpit',
       component: CockpitView
     },
     {
       path: '/records',
-      name: 'Records',
       component: RecordsView
     },
     {
       path: '/about',
-      name: 'doesntmatter',
       component: AboutView
     }
   ]
