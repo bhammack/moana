@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 //import HelloWorld from '@/components/HelloWorld'
-import Cockpit from '@/components/Cockpit'
-import Records from '@/components/Records'
+import IndexRoute from '@/components/IndexRoute'
+import CockpitRoute from '@/components/CockpitRoute'
+import RecordsRoute from '@/components/RecordsRoute'
+import AboutRoute from '@/components/AboutRoute'
+import ApiRoute from '@/components/ApiRoute'
 
 Vue.use(Router)
 
@@ -11,22 +14,27 @@ export default new Router({
     {
       path: '/',
       name: 'ugg',
-      component: Cockpit
+      component: IndexRoute
     },
     {
       path: '/api',
       name: 'Api',
-      component: null
+      component: ApiRoute
     },
     {
       path: '/cockpit',
       name: 'Cockpit',
-      component: Cockpit
+      component: CockpitRoute
     },
     {
       path: '/records',
       name: 'Records',
-      component: Records
+      component: RecordsRoute
+    },
+    {
+      path: '/about',
+      name: 'doesntmatter',
+      component: AboutRoute
     }
   ]
 })

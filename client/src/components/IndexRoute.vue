@@ -1,6 +1,6 @@
 <template>
-    <div id="cockpit">
-    <h1>Cockpit</h1>
+    <div id="index">
+    <h1>Index</h1>
         
     </div>
 </template>

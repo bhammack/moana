@@ -1,6 +1,7 @@
 <template>
-    <div id="records">
-        <h1>Records</h1>
+    <div id="api">
+    <h1>Api</h1>
+        
     </div>
 </template>
 <script>

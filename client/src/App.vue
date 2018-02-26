@@ -4,7 +4,7 @@
       <app-navbar></app-navbar>
     </header>
     <main>
-      <router-view></router-view>      
+      <router-view></router-view>
     </main>
     <footer>
       
@@ -22,3 +22,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  main {
+    height: calc(100vh - 56px);
+  }
+</style>
