@@ -6,18 +6,16 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 
-// Import bootstrap js
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
-//import '../static/bootswatch-flatly.min.css'
 
-//import $ from 'jquery';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
+
 import mqtt from 'async-mqtt';
 import axios from 'axios';
 
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
-//require('datatables.net-bs4')(window, $);
 
 Vue.config.productionTip = false;
 new Vue({
