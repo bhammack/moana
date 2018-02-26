@@ -4,7 +4,9 @@
       <app-navbar></app-navbar>
     </header>
     <main>
-      <router-view></router-view>
+      <transition name="fade">
+        <router-view></router-view>
+      </transition>
     </main>
     <footer>
       
@@ -27,4 +29,23 @@ export default {
   main {
     height: calc(100vh - 56px);
   }
+
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+
+
+
+
+
+
 </style>
