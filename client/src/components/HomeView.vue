@@ -11,7 +11,8 @@
             <br/>
 
             <div class="jumbotron">
-                <p>Foursite Engineering presents...</p>
+                <!-- <p>Foursite Engineering presents...</p> -->
+                <img src="./../images/foursite.png">
                 <hr>
                 <h1>MOANA</h1>
                 <h2>Mobile Operational Assistance for Navigation Appropriations</h2>
