@@ -10,7 +10,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.4",
     "async-mqtt": "^1.0.1",
     "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
@@ -20,6 +19,7 @@
     "mqtt": "^2.15.3",
     "popper.js": "^1.12.9",
     "vue": "^2.5.2",
+    "vue-canvas-gauges": "0.0.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

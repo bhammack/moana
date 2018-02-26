@@ -10,7 +10,6 @@ import router from './router';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-
 import mqtt from 'async-mqtt';
 import axios from 'axios';
 
