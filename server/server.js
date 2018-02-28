@@ -17,7 +17,7 @@ mongoose.connect(database.url, {}).then(
   }, 
   (err) => {
 	console.log('unable to connect to mongo.db instance');
-    //console.log(err);
+    console.log(err);
   }
 );
 
