@@ -2,30 +2,49 @@
     <div id="cockpit">
         
         <div class="video">
-            <iframe 
+            <!-- <iframe 
                 src="https://www.youtube.com/embed/tgbNymZ7vqY" 
                 frameborder="1" 
                 style="display: block; width: 100%; height: 100%;">
-            </iframe>
+            </iframe> -->
         </div>
         <div class="map">
-            <iframe 
+            <!-- <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14019.203099096716!2d-81.21332595000001!3d28.54570735!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1519679998787" 
                 frameborder="1" 
                 style="display: block; width: 100%; height: 100%;">
-            </iframe>
+            </iframe> -->
         </div>
         <div class="sensor sensor1">
-            <radial-gauge :value="377"></radial-gauge>
+            <radial-gauge v-model="altitude" 
+            v-bind:options="{
+                title: 'Altitude',
+                units: 'feet',
+                minValue: 0,
+                maxValue: 100,
+                }"></radial-gauge>
         </div>
         <div class="sensor sensor2">
-            <radial-gauge :value="377"></radial-gauge>
+            <radial-gauge v-model="temperature" 
+            v-bind:options="{
+                title: 'Temperature',
+                units: 'degrees',
+                minValue: 0,
+                maxValue: 100
+            }"></radial-gauge>
         </div>
         <div class="sensor sensor3">
-            <linear-gauge :value="377"></linear-gauge>
+            <linear-gauge v-model="power"
+            v-bind:options="{
+                title: 'Power',
+                minValue: 0,
+                maxValue: 100,
+                barBeginCircle: 0
+            }"></linear-gauge>
         </div>
-        <div class="status">
+        <div class="sensor status">
             <h1>Status bar here</h1>
+            <button type="button" v-on:click="testme()">Click me</button>
         </div>
 
 
@@ -37,9 +56,28 @@
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
 
     export default {
+
+
+        data: function() {
+            return {
+                altitude: 0,
+                temperature: 75,
+                power: 100,
+                speed: 0
+            }
+        },
         components: {
             LinearGauge,
             RadialGauge
+        },
+
+
+        methods: {
+            testme: function() {
+                this.altitude = Math.floor(Math.random() * 101); // [0-100]
+                this.temperature = Math.floor(Math.random() * 101); // [0-100]
+                this.power = Math.floor(Math.random() * 101); // [0-100]
+            }
         }
     }
 
@@ -61,6 +99,10 @@
 
     .map {
         grid-area: map;
+    }
+
+    .sensor {
+        background-color: black;
     }
 
 
