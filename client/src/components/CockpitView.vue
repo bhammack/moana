@@ -42,9 +42,10 @@
                 barBeginCircle: 0
             }"></linear-gauge>
         </div>
-        <div class="sensor status">
+        <div class="status">
             <h1>annunciator panel</h1>
             <button type="button" v-on:click="testme()">Click me</button>
+            <img src="./../svg/quadcopter_basic.svg">
         </div>
 
 
