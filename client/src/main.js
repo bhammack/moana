@@ -6,13 +6,17 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 
-
-import 'bootstrap';
+// Css first, then JS.
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+
 import 'font-awesome/css/font-awesome.min.css';
 //import mqtt from 'async-mqtt';
 import VueMqtt from 'vue-mqtt';
 import axios from 'axios';
+
+import 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';

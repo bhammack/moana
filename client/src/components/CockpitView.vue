@@ -9,6 +9,9 @@
             </iframe> -->
         </div>
         <div class="map">
+            <div id="map">
+                
+            </div>
             <!-- <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14019.203099096716!2d-81.21332595000001!3d28.54570735!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1519679998787" 
                 frameborder="1" 
@@ -45,7 +48,7 @@
         <div class="status">
             <h1>annunciator panel</h1>
             <button type="button" v-on:click="testme()">Click me</button>
-            <img src="./../svg/quadcopter_basic.svg">
+            <!-- <img src="./../svg/quadcopter_basic.svg"> -->
         </div>
 
 
@@ -70,6 +73,9 @@
         components: {
             LinearGauge,
             RadialGauge
+        },
+        mounted: function() {
+            console.log('mounted');
         },
 
 
@@ -96,6 +102,7 @@
 
     .video {
         grid-area: video;
+        background-color: grey;
     }
 
     .map {
