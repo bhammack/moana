@@ -43,7 +43,7 @@
             }"></linear-gauge>
         </div>
         <div class="sensor status">
-            <h1>Status bar here</h1>
+            <h1>annunciator panel</h1>
             <button type="button" v-on:click="testme()">Click me</button>
         </div>
 

@@ -10,11 +10,18 @@ import router from './router';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import mqtt from 'async-mqtt';
+//import mqtt from 'async-mqtt';
+import VueMqtt from 'vue-mqtt';
 import axios from 'axios';
 
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
+
+// use the mqtt library for the entire application.
+// Vue.use(VueMqtt, 'ws://iot.eclipse.org/ws', {
+//   username: 'client',
+//   password: 'client'
+// });
 
 Vue.config.productionTip = false;
 new Vue({
