@@ -25,6 +25,7 @@
 export default {
     mounted: function() {
         $('#recordsTable').DataTable();
+        // Also have this fetch the latest data upon mount.
     }
 }
 

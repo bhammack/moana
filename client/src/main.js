@@ -11,34 +11,31 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
 import 'font-awesome/css/font-awesome.min.css';
-//import mqtt from 'async-mqtt';
+// import mqtt from 'async-mqtt';
 import VueMqtt from 'vue-mqtt';
-import axios from 'axios';
+//import axios from 'axios';
 
-import 'leaflet';
-import 'leaflet/dist/leaflet.css';
+//import 'leaflet';
+//import 'leaflet/dist/leaflet.css';
 
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
 
 // use the mqtt library for the entire application.
-// Vue.use(VueMqtt, 'ws://iot.eclipse.org/ws', {
-//   username: 'client',
-//   password: 'client'
-// });
+Vue.use(VueMqtt, 'ws://broker.mqttdashboard.com:8000/mqtt', {});
 
 Vue.config.productionTip = false;
-new Vue({
+var vm = new Vue({
   el: '#app',
-  router,
+  router: router,
   components: { App },
   template: '<App/>'
 });
 
-// var client = mqtt.connect('mqtt://test.mosquitto.org')
+// var client = mqtt.connect('ws://broker.mqttdashboard.com:8000/mqtt');
 // // Connect does not return a promise...
 // client.on('connect', () => {
 //   // sub
 //   console.log('connect response')
-// })
+// });
 

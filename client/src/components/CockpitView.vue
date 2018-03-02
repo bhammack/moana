@@ -60,8 +60,14 @@
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
 
     export default {
-
-
+        
+        mqtt: {
+            'telemetry': function(val) {
+                var telemetry = JSON.parse(val.toString());
+                console.log(telemetry);
+                this.update(telemetry);
+            },
+        },
         data: function() {
             return {
                 altitude: 0,
@@ -76,14 +82,20 @@
         },
         mounted: function() {
             console.log('mounted');
+            this.$mqtt.subscribe('telemetry');
         },
 
 
         methods: {
             testme: function() {
-                this.altitude = Math.floor(Math.random() * 101); // [0-100]
-                this.temperature = Math.floor(Math.random() * 101); // [0-100]
-                this.power = Math.floor(Math.random() * 101); // [0-100]
+                this.altitude = Math.floor(Math.random() * 101);        // [0-100]
+                this.temperature = Math.floor(Math.random() * 101);     // [0-100]
+                this.power = Math.floor(Math.random() * 101);           // [0-100]
+            },
+            update: function(telemetry) {
+                this.altitude = telemetry.altitude;
+                this.temperature = telemetry.temperature;
+                this.power = telemetry.power;
             }
         }
     }
