@@ -7,6 +7,9 @@ import App from './App';
 import router from './router';
 
 // Css first, then JS.
+
+import $ from 'jquery';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 

@@ -7,12 +7,12 @@
                 <thead>
                     <tr>
                         <th>Timestamp</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
+                        <!-- <th>Latitude</th> -->
+                        <!-- <th>Longitude</th> -->
                         <th>Altitude</th>
                         <th>Temperature</th>
                         <th>Power</th>
-                        <th>...</th>
+                        <!-- <th>...</th> -->
                     </tr>
                 </thead>
             </table>
@@ -24,7 +24,18 @@
 
 export default {
     mounted: function() {
-        $('#recordsTable').DataTable();
+        $('#recordsTable').DataTable({
+            ajax: {
+                url: '/api/telemetry',
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'dateReceived' },
+                { data: 'altitude' },
+                { data: 'temperature' },
+                { data: 'power' }
+            ]
+        });
         // Also have this fetch the latest data upon mount.
     }
 }

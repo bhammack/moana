@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -29,6 +30,15 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      // Necessary to load bootstrap dependencies.
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default']
+    })
+  ],
   module: {
     rules: [
       {
