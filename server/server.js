@@ -21,14 +21,37 @@ mongoose.connect(database.url, {}).then(() => {
 
 // Mqtt Subscribers =======================================================================================================================
 const client = mqtt.connect('ws://broker.mqttdashboard.com:8000/mqtt');
-console.log(client);
+const Telemetry = require('./models/telemetry');
+
 //const client = mqtt.connect('mqtt://test.mosquitto.org');
 client.on('connect', () => {
-  client.publish('telemetry', 'testmessagefromserver');
+  console.log('mqtt connected');
+  client.subscribe('telemetry');
 });
 client.on('error', (error) => {
   console.log(error);
 });
+client.on('message', (topic, message) => {
+  //console.log(message.toString());
+  var obj = JSON.parse(message.toString());
+  var telemetry = new Telemetry();
+  telemetry.altitude = obj.altitude;
+  telemetry.power = obj.power;
+  telemetry.temperature = obj.temperature;
+  telemetry.save((err) => {
+    if (err) {
+      console.log('error on saving telemetry packet');
+    } else {
+      console.log('telemetry packet captured');
+    }
+  });
+
+
+});
+
+
+
+
 
 // Express configuration ==================================================================================================================
 const app = express();

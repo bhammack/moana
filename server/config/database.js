@@ -1,4 +1,4 @@
 var db = {
-	url: 'mongodb://<dbuser>:<dbpassword>@ds251548.mlab.com:51548/moana-mongo'
+	url: 'mongodb://localhost:27017'
 }
 module.exports = db
