@@ -1,4 +1,5 @@
 // Modules ================================================================================================================================
+require('dotenv').config();
 const express       = require('express');
 const path          = require('path');
 const http          = require('http');
@@ -8,14 +9,16 @@ const morgan        = require('morgan');                      // log requests to
 const mqtt          = require('mqtt');
 
 // Establish Mongodb connector ============================================================================================================
-const api           = require('./routes/api');                // Get our API router object.
-const database      = require('./config/database');           // load database.js exports object
+const apiRouter     = require('./routes/api');                // Get our API router object.
 
 // ES6 promise returned from connect. .then(resolve, reject);
-mongoose.connect(database.url, {}).then(() => { 
+const db_host = process.env.DB_HOST || 'mongodb://localhost:27017';
+const port = process.env.PORT || '3000';
+
+mongoose.connect(db_host, {}).then(() => { 
     console.log('mongoose connected');
   }, (err) => {
-	console.log('unable to connect to mongo.db instance');
+	  console.log('unable to connect to mongo.db instance');
   }
 );
 
@@ -23,7 +26,6 @@ mongoose.connect(database.url, {}).then(() => {
 const client = mqtt.connect('ws://broker.mqttdashboard.com:8000/mqtt');
 const Telemetry = require('./models/telemetry');
 
-//const client = mqtt.connect('mqtt://test.mosquitto.org');
 client.on('connect', () => {
   console.log('mqtt connected');
   client.subscribe('telemetry');
@@ -45,17 +47,10 @@ client.on('message', (topic, message) => {
       console.log('telemetry packet captured');
     }
   });
-
-
 });
-
-
-
-
 
 // Express configuration ==================================================================================================================
 const app = express();
-const port = process.env.PORT || '3000';                      // Get port from environment and store in Express.
 app.set('port', port);
 app.use(bodyParser.json());                                   // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));           // parse application/x-www-form-urlencoded
@@ -65,7 +60,7 @@ app.use(bodyParser.urlencoded({ extended: true }));           // parse applicati
 app.use('/', express.static(path.join(__dirname, '../client/dist')));
 
 // API configuration ======================================================================================================================
-app.use('/api', api);
+app.use('/api', apiRouter);
 
 // Express Routes =========================================================================================================================
 app.get('*', (req, res) => {
@@ -77,4 +72,3 @@ const server = http.createServer(app);                                      // C
 server.listen(port, () => {
   console.log(`Server running on localhost:${port}`);
 });
-
