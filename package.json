@@ -9,7 +9,7 @@
     "start": "node server/server.js",
     "dev": "webpack-dev-server --inline --progress --config client/build/webpack.dev.conf.js",
     "deploy": "node client/build/build.js && nodemon server/server.js",
-	"build": "node client/build/build.js"
+	  "build": "node client/build/build.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

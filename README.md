@@ -7,9 +7,9 @@
 In order to setup the project environment, please enter the commands below:
 
 ``` bash
-$ git clone [project repo]
-$ cd moana/server
+$ git clone https://www.github.com/bhammack/moana.git
+$ cd moana
 $ npm install
-$ cd ../client
-$ npm install
+$ npm run build 
+$ npm start
 ```

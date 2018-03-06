@@ -4,7 +4,7 @@ const express       = require('express');
 const path          = require('path');
 const http          = require('http');
 const bodyParser    = require('body-parser');                 // pull information from html POST (express4)
-const mongoose      = require('mongoose');                    // for interactions with mongodb
+const mongoose      = require('mongoose');
 const morgan        = require('morgan');                      // log requests to the console
 const mqtt          = require('mqtt');
 
@@ -52,6 +52,7 @@ client.on('message', (topic, message) => {
 // Express configuration ==================================================================================================================
 const app = express();
 app.set('port', port);
+app.use(morgan('combined'));
 app.use(bodyParser.json());                                   // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));           // parse application/x-www-form-urlencoded
 
