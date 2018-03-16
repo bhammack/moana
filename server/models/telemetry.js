@@ -24,3 +24,19 @@ Latitude (relative or absolute)
 Longitude (relative or absolute)
 Event codes - up to us for any other data we need to declare.
 */
+
+
+/*
+Control commands sent from website to the quadcopter
+0 - kill all power
+1 - drop payload
+2 - pan left
+3 - pan right
+4 - tilt up
+5 - tilt down
+6 - lights on
+7 - lights off
+.
+.
+.
+*/

@@ -6,7 +6,8 @@ const http          = require('http');
 const bodyParser    = require('body-parser');                 // pull information from html POST (express4)
 const mongoose      = require('mongoose');
 const morgan        = require('morgan');                      // log requests to the console
-const mqtt          = require('mqtt');
+const mqtt          = require('mqtt');                        // might not need this
+const mosca         = require('mosca');
 
 // Establish Mongodb connector ============================================================================================================
 const apiRouter     = require('./routes/api');                // Get our API router object.
@@ -70,6 +71,14 @@ app.get('*', (req, res) => {
 
 // Server start ===========================================================================================================================
 const server = http.createServer(app);                                      // Create HTTP server.
+
+// Attach the message broker to the http server for websocket support on the same port.
+var broker = new mosca.Server({});
+broker.on('ready', () => {
+  console.log('mqtt broker online');
+});
+broker.attachHttpServer(server);
+
 server.listen(port, () => {
   console.log(`Server running on localhost:${port}`);
 });
