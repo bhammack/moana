@@ -2,21 +2,21 @@
     <div id="cockpit">
         
         <div class="video">
-            <!-- <iframe 
-                src="https://www.youtube.com/embed/tgbNymZ7vqY" 
+            <iframe 
+                src="https://www.youtube.com/embed/nutJCBPEwIg" 
                 frameborder="1" 
                 style="display: block; width: 100%; height: 100%;">
-            </iframe> -->
+            </iframe>
         </div>
         <div class="map">
             <div id="map">
                 
             </div>
-            <!-- <iframe 
+            <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14019.203099096716!2d-81.21332595000001!3d28.54570735!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1519679998787" 
                 frameborder="1" 
                 style="display: block; width: 100%; height: 100%;">
-            </iframe> -->
+            </iframe>
         </div>
         <div class="sensor sensor1">
             <radial-gauge v-model="altitude" 
@@ -46,8 +46,8 @@
             }"></linear-gauge>
         </div>
         <div class="status">
-            <h1>annunciator panel</h1>
-            <button type="button" v-on:click="testme()">Click me</button>
+            <!-- <h1>annunciator panel</h1> -->
+            <button type="button" class="btn btn-primary" v-on:click="testme()">Test Telemetry Widgets</button>
             <!-- <img src="./../svg/quadcopter_basic.svg"> -->
         </div>
 
