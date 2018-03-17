@@ -8,14 +8,14 @@ const mongoose      = require('mongoose');
 const morgan        = require('morgan');                      // log requests to the console
 const mqtt          = require('mqtt');                        // might not need this
 const mosca         = require('mosca');
+const ra2           = require('./plugins/ra2');
 
 // Establish Mongodb connector ============================================================================================================
 const apiRouter     = require('./routes/api');                // Get our API router object.
-
-// ES6 promise returned from connect. .then(resolve, reject);
 const db_host = process.env.DB_HOST || 'mongodb://localhost:27017';
 const port = process.env.PORT || '3000';
 
+console.log('"' + ra2.quote() + '"');
 mongoose.connect(db_host, {}).then(() => { 
     console.log('mongoose connected');
   }, (err) => {
@@ -24,6 +24,7 @@ mongoose.connect(db_host, {}).then(() => {
 );
 
 // Mqtt Subscribers =======================================================================================================================
+/*
 const client = mqtt.connect('ws://broker.mqttdashboard.com:8000/mqtt');
 const Telemetry = require('./models/telemetry');
 
@@ -49,7 +50,7 @@ client.on('message', (topic, message) => {
     }
   });
 });
-
+*/
 // Express configuration ==================================================================================================================
 const app = express();
 app.set('port', port);
@@ -57,28 +58,42 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());                                   // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));           // parse application/x-www-form-urlencoded
 
-// Static routes and content ==============================================================================================================
-// This includes js, css, and content folders.
+// Express routes =========================================================================================================================
 app.use('/', express.static(path.join(__dirname, '../client/dist')));
-
-// API configuration ======================================================================================================================
 app.use('/api', apiRouter);
-
-// Express Routes =========================================================================================================================
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 // Server start ===========================================================================================================================
-const server = http.createServer(app);                                      // Create HTTP server.
+const server = http.createServer(app);
 
-// Attach the message broker to the http server for websocket support on the same port.
-var broker = new mosca.Server({});
+// Attach the message broker to the http server for websocket support on the same port ====================================================
+var backendstore = {
+  type: 'mongo',
+  url: process.env.DB_HOST + '/mqtt',
+  pubsubCollection: 'ascoltatori',
+  mongo: {}
+}
+var broker = new mosca.Server({
+  port: 1883
+  //backend: backendstore
+});
 broker.on('ready', () => {
   console.log('mqtt broker online');
 });
+broker.on('clientConnected', (client) => {
+  console.log('client connected');
+});
+broker.on('clientDisconnected', (client) => {
+  console.log('client disconnected');
+});
+broker.on('published', (packet, client) => {
+  console.log(packet);
+});
 broker.attachHttpServer(server);
 
+// Finally, start the http server =========================================================================================================
 server.listen(port, () => {
   console.log(`Server running on localhost:${port}`);
 });
