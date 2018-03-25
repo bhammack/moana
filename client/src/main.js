@@ -25,7 +25,7 @@ import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
 
 // use the mqtt library for the entire application.
-Vue.use(VueMqtt, 'ws://broker.mqttdashboard.com:8000/mqtt', {});
+Vue.use(VueMqtt, 'ws://localhost:3000', {});
 
 Vue.config.productionTip = false;
 var vm = new Vue({

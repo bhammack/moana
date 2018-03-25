@@ -2,15 +2,9 @@ const express = require('express');
 const router = express.Router();
 const HttpStatus = require('http-status-codes');
 
-//var Vehicle = require('../models/vehicle');
 //var Points = require('../models/points');
 var Telemetry = require('../models/telemetry');
-
-
 // https://gist.github.com/subfuzion/669dfae1d1a27de83e69
-
-
-
 
 // Get the root of the API. Use this as a help to show what endpoints are available.
 router.get('/', (req, res) => {
