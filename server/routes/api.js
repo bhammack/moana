@@ -37,6 +37,7 @@ router.route('/points')
   .post((req, res) => {
     var point = new Points();
     point.name = req.body.name;
+    point.markerId = req.body.markerId;
     point.description = req.body.description;
     point.latitude = req.body.latitude;
     point.longitude = req.body.longitude;
@@ -51,17 +52,9 @@ router.route('/points')
   });
 
 router.route('/points/:point_id')
-.get((req, res) => {
-  Points.findById(req.params.point_id, (err, point) => {
-    if (err) {
-      res.status(HttpStatus.NOT_FOUND).send(err);
-    } else {
-      res.status(HttpStatus.OK).json(point);
-    }
-  });
-})
 .delete((req, res) => {
-  Points.findByIdAndRemove(req.params.point_id, (err, point) => {
+  // point_id is not the id of the database object, but is the markerId.
+  Points.findOneAndRemove({ 'markerId': req.params.point_id }, (err, point) => {
     if (err) {
       res.status(HttpStatus.NOT_FOUND).send(err);
     } else {

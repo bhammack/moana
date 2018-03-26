@@ -16,6 +16,11 @@ import 'font-awesome/css/font-awesome.min.css';
 import VueMqtt from 'vue-mqtt';
 //import mqtt from 'mqtt';
 
+
+//import 'leaflet/dist/leaflet.css';
+//import 'leaflet/dist/images';
+//import 'leaflet';
+
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
 

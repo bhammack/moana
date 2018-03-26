@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var PointSchema = new mongoose.Schema({
     name:           String,
     description:    { type: String, default: '' },
+    markerId:       Number,
     latitude:       Number,
     longitude:      Number,
     altitude:       { type: Number, default: 0 }

@@ -10,6 +10,7 @@
       <li class="nav-item"><a class="nav-link" href="/#/home">Home</a></li>      
       <li class="nav-item"><a class="nav-link" href="/#/cockpit">Cockpit</a></li>
       <li class="nav-item"><a class="nav-link" href="/#/records">Records</a></li>
+      <li class="nav-item"><a class="nav-link" href="/#/map">Map</a></li>
       <li class="nav-item"><a class="nav-link" href="/#/about">About</a></li>
     </ul>
   </div>
