@@ -13,13 +13,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
 import 'font-awesome/css/font-awesome.min.css';
-// import mqtt from 'async-mqtt';
 import VueMqtt from 'vue-mqtt';
 //import mqtt from 'mqtt';
-//import axios from 'axios';
-
-//import 'leaflet/dist/leaflet.css';
-//import 'leaflet';
 
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';

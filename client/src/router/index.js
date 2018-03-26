@@ -5,6 +5,7 @@ import CockpitView from '@/components/CockpitView'
 import RecordsView from '@/components/RecordsView'
 import AboutView from '@/components/AboutView'
 import ApiView from '@/components/ApiView'
+import MapVue from '@/components/MapVue'
 
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ export default new Router({
     {
       path: '/about',
       component: AboutView
+    },
+    {
+      path: '/map',
+      component: MapVue
     }
   ]
 })
