@@ -5,12 +5,9 @@ var Schema = mongoose.Schema;
 
 // Schema for points of interest. Either marked by the end user, or auto marked by the quadcopter.
 var PointSchema = new mongoose.Schema({
-    name:           String,
     description:    { type: String, default: '' },
-    markerId:       Number,
     latitude:       Number,
-    longitude:      Number,
-    altitude:       { type: Number, default: 0 }
+    longitude:      Number
 });
 
 module.exports = mongoose.model('Point', PointSchema);

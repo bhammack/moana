@@ -36,12 +36,10 @@ router.route('/points')
   })
   .post((req, res) => {
     var point = new Points();
-    point.name = req.body.name;
     point.markerId = req.body.markerId;
     point.description = req.body.description;
     point.latitude = req.body.latitude;
     point.longitude = req.body.longitude;
-    point.altitude = req.body.altitude;
     point.save((err) => {
       if (err) {
         res.status(HttpStatus.NOT_FOUND).send(err);
@@ -49,19 +47,16 @@ router.route('/points')
         res.status(HttpStatus.OK).json(point);
       }
     });
+  })
+  .delete((req, res) => {
+    // Delete is done by the marker's lat and lng, which is the only unique identifier in our system (not pretty, I know).
+    Points.findOneAndRemove({ 'latitude': req.query.latitude, 'longitude': req.query.longitude }, (err, point) => {
+      if (err) {
+        res.status(HttpStatus.NOT_FOUND).send(err);
+      } else {
+        res.status(HttpStatus.OK).json(point);
+      }
+    });
   });
-
-router.route('/points/:point_id')
-.delete((req, res) => {
-  // point_id is not the id of the database object, but is the markerId.
-  Points.findOneAndRemove({ 'markerId': req.params.point_id }, (err, point) => {
-    if (err) {
-      res.status(HttpStatus.NOT_FOUND).send(err);
-    } else {
-      res.status(HttpStatus.OK).json(point);
-    }
-  });
-});
-
 
 module.exports = router;

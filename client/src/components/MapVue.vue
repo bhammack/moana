@@ -48,15 +48,13 @@ export default {
                 .bindPopup('<h1>sample text</h1>')
                 .bindTooltip('tooltip')
                 .on('contextmenu', function(event) {
-                    vm.removeMarker(event.target._leaflet_id);
+                    vm.removeMarker(event.target._leaflet_id, event.target._latlng.lat, event.target._latlng.lng);
                 });
             axios.post('api/points', {
-                name: "pointname",
                 description: "pointdesc",
                 markerId: marker._leaflet_id,
                 latitude: marker._latlng.lat,
                 longitude: marker._latlng.lng,
-                altitude: 0
             }).then((res) => {
                 console.log(res);
             })
@@ -66,27 +64,27 @@ export default {
         },
         getMarkers: function() {
             var vm = this;
-            // axios.get('api/points').then((res) => {
-            //     res.data.forEach(function(point) {
-            //         var latlng = {
-            //             lat: point.latitude,
-            //             lng: point.longitude
-            //         }
-            //     L.marker(latlng, {})
-            //         .addTo(vm.markerGroup)
-            //         .bindPopup('<h1>sample text</h1>')
-            //         .bindTooltip('tooltip')
-            //         .on('contextmenu', function(event) {
-            //             vm.removeMarker(event.target._leaflet_id);
-            //         });
-            //     });
-            // }).catch((err) => {
+            axios.get('api/points').then((res) => {
+                res.data.forEach(function(point) {
+                    var latlng = {
+                        lat: point.latitude,
+                        lng: point.longitude
+                    }
+                L.marker(latlng, {})
+                    .addTo(vm.markerGroup)
+                    .bindPopup('<h1>sample text</h1>')
+                    .bindTooltip('tooltip')
+                    .on('contextmenu', function(event) {
+                        vm.removeMarker(event.target._leaflet_id, event.target._latlng.lat, event.target._latlng.lng);
+                    });
+                });
+            }).catch((err) => {
 
-            // });
+            });
         },
-        removeMarker: function(markerId) {
+        removeMarker: function(markerId, lat, lng) {
             this.markerGroup.removeLayer(markerId);
-            axios.delete('api/points/'+markerId).then((res) => {
+            axios.delete('api/points?latitude='+lat+'&longitude='+lng).then((res) => {
                 console.log(res);
             }).catch((err) => {
 
@@ -97,5 +95,4 @@ export default {
 
 </script>
 <style>
-    
 </style>
