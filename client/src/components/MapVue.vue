@@ -72,8 +72,8 @@ export default {
                     }
                 L.marker(latlng, {})
                     .addTo(vm.markerGroup)
-                    .bindPopup('<h1>sample text</h1>')
-                    .bindTooltip('tooltip')
+                    .bindPopup('Point of Interest')
+                    //.bindTooltip('tooltip')
                     .on('contextmenu', function(event) {
                         vm.removeMarker(event.target._leaflet_id, event.target._latlng.lat, event.target._latlng.lng);
                     });
