@@ -35,10 +35,40 @@ router.route('/points')
     });
   })
   .post((req, res) => {
-
-  })
-  .delete((req, res) => {
-
+    var point = new Points();
+    point.name = req.body.name;
+    point.description = req.body.description;
+    point.latitude = req.body.latitude;
+    point.longitude = req.body.longitude;
+    point.altitude = req.body.altitude;
+    point.save((err) => {
+      if (err) {
+        res.status(HttpStatus.NOT_FOUND).send(err);
+      } else {
+        res.status(HttpStatus.OK).json(point);
+      }
+    });
   });
+
+router.route('/points/:point_id')
+.get((req, res) => {
+  Points.findById(req.params.point_id, (err, point) => {
+    if (err) {
+      res.status(HttpStatus.NOT_FOUND).send(err);
+    } else {
+      res.status(HttpStatus.OK).json(point);
+    }
+  });
+})
+.delete((req, res) => {
+  Points.findByIdAndRemove(req.params.point_id, (err, point) => {
+    if (err) {
+      res.status(HttpStatus.NOT_FOUND).send(err);
+    } else {
+      res.status(HttpStatus.OK).json(point);
+    }
+  });
+});
+
 
 module.exports = router;
