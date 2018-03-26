@@ -2,6 +2,7 @@ const mosca = require('mosca');
 const Telemetry = require('../models/telemetry');
 
 // Custom override function to determine if a json object has a property.
+// https://github.com/mcollina/mosca/wiki/Authentication-&-Authorization
 Object.prototype.hasOwnProperty = function(property) {
     return this[property] !== undefined;
 };
@@ -60,7 +61,6 @@ broker.on('published', (packet, client) => {
           console.log('telemetry packet captured');
         }
       });
-
     }
 });
 

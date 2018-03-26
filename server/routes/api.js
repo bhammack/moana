@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const HttpStatus = require('http-status-codes');
 
-//var Points = require('../models/points');
+// Mongoose models
 var Telemetry = require('../models/telemetry');
 var Points = require('../models/points');
 // https://gist.github.com/subfuzion/669dfae1d1a27de83e69

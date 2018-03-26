@@ -2,21 +2,16 @@
     <div id="cockpit">
         
         <div class="video">
-            <!-- <iframe 
-                src="https://www.youtube.com/embed/nutJCBPEwIg" 
-                frameborder="1" 
-                style="display: block; width: 100%; height: 100%;">
-            </iframe> -->
+
+
         </div>
         <div class="map">
             <div id="map">
-                
+                <v-map :zoom=13 :center="[47.413220, -1.219482]">
+                    <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+                    <v-marker :lat-lng="[47.413220, -1.219482]"></v-marker>
+                </v-map>
             </div>
-            <!-- <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14019.203099096716!2d-81.21332595000001!3d28.54570735!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1519679998787" 
-                frameborder="1" 
-                style="display: block; width: 100%; height: 100%;">
-            </iframe> -->
         </div>
         <div class="sensor sensor1">
             <radial-gauge v-model="altitude" 
@@ -58,9 +53,9 @@
 <script>
     import LinearGauge from 'vue-canvas-gauges/src/LinearGauge';
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
+    import Vue2Leaflet from 'vue2-leaflet';
 
     export default {
-        
         mqtt: {
             'telemetry': function(val) {
                 var telemetry = JSON.parse(val.toString());
@@ -77,8 +72,11 @@
             }
         },
         components: {
-            LinearGauge,
-            RadialGauge
+            'linear-gauge': LinearGauge,
+            'radial-gauge': RadialGauge,
+            'v-map': Vue2Leaflet.Map,
+            'v-tilelayer': Vue2Leaflet.TileLayer,
+            'v-marker': Vue2Leaflet.Marker
         },
         mounted: function() {
             console.log('mounted');
