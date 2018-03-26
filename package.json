@@ -10,7 +10,7 @@
     "dev": "webpack-dev-server --inline --progress --config client/build/webpack.dev.conf.js",
     "deploy": "node client/build/build.js && nodemon server/server.js",
     "build": "node client/build/build.js",
-	"server": "nodemon server/server.js"
+    "nodemon": "nodemon --watch client --watch server --exec npm run build && server/server.js"
   },
   "dependencies": {
     "axios": "^0.18.0",

@@ -7,7 +7,6 @@ import App from './App';
 import router from './router';
 
 // Css first, then JS.
-
 import $ from 'jquery';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +15,7 @@ import 'bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
 // import mqtt from 'async-mqtt';
 import VueMqtt from 'vue-mqtt';
+//import mqtt from 'mqtt';
 //import axios from 'axios';
 
 //import 'leaflet/dist/leaflet.css';
@@ -26,6 +26,7 @@ import 'datatables.net-bs4';
 
 // use the mqtt library for the entire application.
 Vue.use(VueMqtt, 'ws://localhost:3000', {});
+//Vue.use(VueMqtt, 'ws://broker.mqttdashboard.com:8000/mqtt', {});
 
 Vue.config.productionTip = false;
 var vm = new Vue({

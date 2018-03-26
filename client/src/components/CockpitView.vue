@@ -7,10 +7,10 @@
         </div>
         <div class="map">
             <div id="map">
-                <v-map :zoom=13 :center="[47.413220, -1.219482]">
+                <!-- <v-map :zoom=13 :center="[47.413220, -1.219482]">
                     <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
                     <v-marker :lat-lng="[47.413220, -1.219482]"></v-marker>
-                </v-map>
+                </v-map> -->
             </div>
         </div>
         <div class="sensor sensor1">
@@ -66,8 +66,8 @@
         data: function() {
             return {
                 altitude: 0,
-                temperature: 75,
-                power: 100,
+                temperature: 0,
+                power: 0,
                 speed: 0
             }
         },
@@ -86,9 +86,18 @@
 
         methods: {
             testme: function() {
-                this.altitude = Math.floor(Math.random() * 101);        // [0-100]
-                this.temperature = Math.floor(Math.random() * 101);     // [0-100]
-                this.power = Math.floor(Math.random() * 101);           // [0-100]
+                console.log('attempting to publish');
+                var testobj = {
+                    altitude: Math.floor(Math.random() * 101),        // [0-100]
+                    temperature: Math.floor(Math.random() * 101),     // [0-100]
+                    power: Math.floor(Math.random() * 101),           // [0-100]
+                    latitude: 0,
+                    longitude: 0,
+                    eventCode: 0
+                }
+                this.$mqtt.publish('telemetry', JSON.stringify(testobj), {
+                    retain: true
+                });
             },
             update: function(telemetry) {
                 this.altitude = telemetry.altitude;

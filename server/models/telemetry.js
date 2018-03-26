@@ -36,7 +36,4 @@ Control commands sent from website to the quadcopter
 5 - tilt down
 6 - lights on
 7 - lights off
-.
-.
-.
 */

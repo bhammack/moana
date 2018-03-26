@@ -25,7 +25,7 @@ mongoose.connect(db_host, {}).then(() => {
 // Express configuration ==================================================================================================================
 const app = express();
 app.set('port', port);
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 app.use(bodyParser.json());                                   // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));           // parse application/x-www-form-urlencoded
 
