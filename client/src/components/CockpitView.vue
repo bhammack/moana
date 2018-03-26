@@ -1,16 +1,17 @@
 <template>
     <div id="cockpit">
         
-        <div class="video">
+        <div class="status">
 
 
         </div>
         <div class="map">
-            <div id="map">
-                <!-- <v-map :zoom=13 :center="[47.413220, -1.219482]">
+            <div id="leafletmap" style="height: 100%">
+                <v-map ref="map" :zoom=13 :center="[28.542644, -81.212693]">
                     <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
                     <v-marker :lat-lng="[47.413220, -1.219482]"></v-marker>
-                </v-map> -->
+                    <!-- <v-marker v-for="point in points" :lat-lng="[47.413220, -1.219482]"></v-marker> -->
+                </v-map>
             </div>
         </div>
         <div class="sensor sensor1">
@@ -40,10 +41,12 @@
                 barBeginCircle: 0
             }"></linear-gauge>
         </div>
-        <div class="status">
+        <div class="sensor sensor4">
             <!-- <h1>annunciator panel</h1> -->
             <button type="button" class="btn btn-primary" v-on:click="testme()">Test Telemetry Widgets</button>
             <!-- <img src="./../svg/quadcopter_basic.svg"> -->
+        </div>
+        <div class="control">
         </div>
 
 
@@ -53,7 +56,10 @@
 <script>
     import LinearGauge from 'vue-canvas-gauges/src/LinearGauge';
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
+
+    import 'leaflet/dist/leaflet.css';
     import Vue2Leaflet from 'vue2-leaflet';
+
 
     export default {
         mqtt: {
@@ -113,15 +119,11 @@
         height: 100%;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: 2fr 1fr;
+        grid-template-rows: 30px repeat(2, 1fr);
         grid-template-areas:
-            "video video video map map"
-            "sensor1 sensor2 sensor3 status status";
-    }
-
-    .video {
-        grid-area: video;
-        background-color: grey;
+            "status status status status status"
+            "sensor1 map map map sensor2"
+            "sensor3 control control control sensor4";
     }
 
     .map {
@@ -132,22 +134,27 @@
         background-color: black;
     }
 
-
-    .sensor.sensor1 {
-        grid-area: sensor1;
-    }
-
-    .sensor.sensor2 {
-        grid-area: sensor2;
-    }
-
-    .sensor.sensor3 {
-        grid-area: sensor3;
-    }
-
     .status {
         grid-area: status;
     }
 
+    .sensor1 {
+        grid-area: sensor1;
+    }
 
+    .sensor2 {
+        grid-area: sensor2;
+    }
+
+    .sensor3 {
+        grid-area: sensor3;
+    }
+
+    .sensor4 {
+        grid-area: sensor4;
+    }
+
+    .control {
+        grid-area: control;
+    }
 </style>
