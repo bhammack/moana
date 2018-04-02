@@ -5,6 +5,7 @@
 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+
 // Weird webpack related leaflet configuration...
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -30,6 +31,7 @@ export default {
         this.getMarkers();
     },
     beforeDestroy: function() {
+        console.log('destroying map...');
         this.map.remove();
         var leafletmap = document.getElementById('leafletmap');
         leafletmap.parentNode.removeChild(leafletmap);
@@ -37,7 +39,8 @@ export default {
     methods: {
         buildMap: function() {
             var vm = this;
-            //
+            // For some reason, it is suggested to dynamically create the map div if working between multiple views containing a leaflet map.
+            // In our case, the 'map' tab and the 'cockpit' tab.
             var mapdiv = document.createElement('div');
             mapdiv.setAttribute('id', 'leafletmap');
             document.getElementById('leafletcontainer').appendChild(mapdiv);
@@ -105,4 +108,7 @@ export default {
 
 </script>
 <style>
+#leafletmap {
+    height: 100%;
+}
 </style>

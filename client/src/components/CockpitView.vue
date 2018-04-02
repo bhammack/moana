@@ -1,112 +1,48 @@
 <template>
     <div id="cockpit">
         <div class="status">
-
         </div>
         <div class="map">
             <map-vue></map-vue>
         </div>
         <div class="sensor sensor1">
-            <radial-gauge v-model="altitude" 
-            v-bind:options="{
-                title: 'Altitude',
-                units: 'feet',
-                minValue: 0,
-                maxValue: 100,
-                animation: true,
-                animationRule: 'linear',
-                animationDuration: 200,
-                animationValue: true
-                }"></radial-gauge>
+            <altimeter></altimeter>
         </div>
         <div class="sensor sensor2">
-            <radial-gauge v-model="temperature" 
-            v-bind:options="{
-                title: 'Temperature',
-                units: 'degrees',
-                minValue: 0,
-                maxValue: 100,
-                animationRule: 'linear',
-                animationDuration: 200,
-                animationValue: true
-            }"></radial-gauge>
+            <thermometer></thermometer>
         </div>
         <div class="sensor sensor3">
-            <linear-gauge v-model="power"
-            v-bind:options="{
-                title: 'Power',
-                minValue: 0,
-                maxValue: 100,
-                barBeginCircle: 0
-            }"></linear-gauge>
+            <power></power>
         </div>
         <div class="sensor sensor4">
-            <!-- <h1>annunciator panel</h1> -->
-            <button type="button" class="btn btn-primary" v-on:click="testme()">Test Telemetry Widgets</button>
-            <!-- <img src="./../svg/quadcopter_basic.svg"> -->
+
         </div>
         <div class="control">
-        </div>
-
-
-        
+        </div>        
     </div>
 </template>
 <script>
-    import LinearGauge from 'vue-canvas-gauges/src/LinearGauge';
-    import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
+    // https://en.wikipedia.org/wiki/Flight_instruments
+    import Altimeter from './Altimeter';
+    import Thermometer from './Thermometer';
+    import Power from './Power';
     import MapVue from './MapVue';
 
-    import 'leaflet/dist/leaflet.css';
-    import Vue2Leaflet from 'vue2-leaflet';
-
     export default {
-        mqtt: {
-            'telemetry': function(val) {
-                var telemetry = JSON.parse(val.toString());
-                console.log(telemetry);
-                this.update(telemetry);
-            },
-        },
         data: function() {
             return {
-                altitude: 0,
-                temperature: 0,
-                power: 0,
-                speed: 0
+                controlsEnabled: false
             }
         },
         components: {
-            'linear-gauge': LinearGauge,
-            'radial-gauge': RadialGauge,
-            'map-vue': MapVue
+            'map-vue': MapVue,
+            'altimeter': Altimeter,
+            'thermometer': Thermometer,
+            'power': Power
         },
         mounted: function() {
             console.log('mounted');
             this.$mqtt.subscribe('telemetry');
-        },
-
-
-        methods: {
-            testme: function() {
-                console.log('attempting to publish');
-                var testobj = {
-                    altitude: Math.floor(Math.random() * 101),        // [0-100]
-                    temperature: Math.floor(Math.random() * 101),     // [0-100]
-                    power: Math.floor(Math.random() * 101),           // [0-100]
-                    latitude: 0,
-                    longitude: 0,
-                    eventCode: 0
-                }
-                this.$mqtt.publish('telemetry', JSON.stringify(testobj), {
-                    retain: true
-                });
-            },
-            update: function(telemetry) {
-                this.altitude = telemetry.altitude;
-                this.temperature = telemetry.temperature;
-                this.power = telemetry.power;
-            }
         }
     }
 
