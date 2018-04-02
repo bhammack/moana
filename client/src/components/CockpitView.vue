@@ -1,18 +1,10 @@
 <template>
     <div id="cockpit">
-        
         <div class="status">
-
 
         </div>
         <div class="map">
-            <div id="leafletmap" style="height: 100%">
-                <v-map ref="map" :zoom=13 :center="[28.542644, -81.212693]">
-                    <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-                    <v-marker :lat-lng="[47.413220, -1.219482]"></v-marker>
-                    <!-- <v-marker v-for="point in points" :lat-lng="[47.413220, -1.219482]"></v-marker> -->
-                </v-map>
-            </div>
+            <map-vue></map-vue>
         </div>
         <div class="sensor sensor1">
             <radial-gauge v-model="altitude" 
@@ -21,6 +13,10 @@
                 units: 'feet',
                 minValue: 0,
                 maxValue: 100,
+                animation: true,
+                animationRule: 'linear',
+                animationDuration: 200,
+                animationValue: true
                 }"></radial-gauge>
         </div>
         <div class="sensor sensor2">
@@ -29,7 +25,10 @@
                 title: 'Temperature',
                 units: 'degrees',
                 minValue: 0,
-                maxValue: 100
+                maxValue: 100,
+                animationRule: 'linear',
+                animationDuration: 200,
+                animationValue: true
             }"></radial-gauge>
         </div>
         <div class="sensor sensor3">
@@ -56,10 +55,10 @@
 <script>
     import LinearGauge from 'vue-canvas-gauges/src/LinearGauge';
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
+    import MapVue from './MapVue';
 
     import 'leaflet/dist/leaflet.css';
     import Vue2Leaflet from 'vue2-leaflet';
-
 
     export default {
         mqtt: {
@@ -80,9 +79,7 @@
         components: {
             'linear-gauge': LinearGauge,
             'radial-gauge': RadialGauge,
-            'v-map': Vue2Leaflet.Map,
-            'v-tilelayer': Vue2Leaflet.TileLayer,
-            'v-marker': Vue2Leaflet.Marker
+            'map-vue': MapVue
         },
         mounted: function() {
             console.log('mounted');

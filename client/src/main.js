@@ -7,27 +7,15 @@ import App from './App';
 import router from './router';
 
 // Css first, then JS.
-import $ from 'jquery';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
-
 import 'font-awesome/css/font-awesome.min.css';
+// I hate this library. It needs to go.
 import VueMqtt from 'vue-mqtt';
 //import mqtt from 'mqtt';
 
 
-//import 'leaflet/dist/leaflet.css';
-//import 'leaflet/dist/images';
-//import 'leaflet';
-
-import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
-import 'datatables.net-bs4';
-
-// use the mqtt library for the entire application.
 Vue.use(VueMqtt, 'ws://localhost:3000', {});
-//Vue.use(VueMqtt, 'ws://broker.mqttdashboard.com:8000/mqtt', {});
-
 Vue.config.productionTip = false;
 var vm = new Vue({
   el: '#app',

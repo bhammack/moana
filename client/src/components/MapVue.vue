@@ -1,5 +1,5 @@
 <template>
-    <div id="leafletmap" style="height: 100%"></div>
+    <div id="leafletcontainer" style="height:100%"></div>
 </template>
 <script>
 
@@ -29,9 +29,19 @@ export default {
         this.buildMap();
         this.getMarkers();
     },
+    beforeDestroy: function() {
+        this.map.remove();
+        var leafletmap = document.getElementById('leafletmap');
+        leafletmap.parentNode.removeChild(leafletmap);
+    },
     methods: {
         buildMap: function() {
             var vm = this;
+            //
+            var mapdiv = document.createElement('div');
+            mapdiv.setAttribute('id', 'leafletmap');
+            document.getElementById('leafletcontainer').appendChild(mapdiv);
+            //
             this.map = L.map('leafletmap').setView(this.center, this.zoom);
             this.map.on('click', function(event) {
                 vm.addMarker(event);

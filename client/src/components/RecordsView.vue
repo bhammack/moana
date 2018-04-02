@@ -22,6 +22,10 @@
 </template>
 <script>
 
+import $ from 'jquery';
+import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
+import 'datatables.net-bs4';
+
 export default {
     mounted: function() {
         this.dt = $('#recordsTable').DataTable({
