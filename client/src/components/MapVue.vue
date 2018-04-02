@@ -32,20 +32,22 @@ export default {
     },
     beforeDestroy: function() {
         console.log('destroying map...');
+        this.map.off();
         this.map.remove();
-        var leafletmap = document.getElementById('leafletmap');
-        leafletmap.parentNode.removeChild(leafletmap);
+        // var leafletmap = document.getElementById('leafletmap');
+        // leafletmap.parentNode.removeChild(leafletmap);
     },
     methods: {
         buildMap: function() {
             var vm = this;
             // For some reason, it is suggested to dynamically create the map div if working between multiple views containing a leaflet map.
             // In our case, the 'map' tab and the 'cockpit' tab.
-            var mapdiv = document.createElement('div');
-            mapdiv.setAttribute('id', 'leafletmap');
-            document.getElementById('leafletcontainer').appendChild(mapdiv);
+            //var mapdiv = document.createElement('div');
+            //mapdiv.setAttribute('id', 'leafletmap');
+            //document.getElementById('leafletcontainer').appendChild(mapdiv);
             //
-            this.map = L.map('leafletmap').setView(this.center, this.zoom);
+            this.map = L.map('leafletcontainer').setView(this.center, this.zoom);
+            //this.map = L.map('leafletmap').setView(this.center, this.zoom);
             this.map.on('click', function(event) {
                 vm.addMarker(event);
             });

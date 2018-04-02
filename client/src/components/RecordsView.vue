@@ -25,6 +25,7 @@
 import $ from 'jquery';
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
+$.fn.dataTable.ext.errMode = 'throw';
 
 export default {
     mounted: function() {
@@ -42,6 +43,10 @@ export default {
                 { data: 'power' },
                 { data: 'eventCode' }
             ]
+        })
+        .on('error.dt', function(e, settings, techNote, message) {
+            // $.fn.dataTable.ext.errMode = none. This method handles dt errors.
+            //console.log( 'An error has been reported by DataTables: ', message );
         });
     },
     data: function() {
