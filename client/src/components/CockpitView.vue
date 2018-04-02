@@ -56,7 +56,7 @@
         grid-template-areas:
             "status status status status status"
             "sensor1 map map map sensor2"
-            "sensor3 control control control sensor4";
+            "sensor3 map map map sensor4";
     }
 
     .map {

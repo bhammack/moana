@@ -25,6 +25,8 @@ var vm = new Vue({
   template: '<App/>'
 });
 
+
+
 // var client = mqtt.connect('ws://broker.mqttdashboard.com:8000/mqtt');
 // // Connect does not return a promise...
 // client.on('connect', () => {

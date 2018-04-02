@@ -12,12 +12,10 @@
                         <th>Temperature</th>
                         <th>Power</th>
                         <th>Event Code</th>
-                        <!-- <th>...</th> -->
                     </tr>
                 </thead>
             </table>
         </div>
-
     </div>
 </template>
 <script>
