@@ -34,12 +34,30 @@
 		},
 		mounted: function() {
 			var vm = this;
-			this.$mqtt.on('connect', vm.onConnect());
-			this.$mqtt.on('reconnect', vm.onConnect());
-			this.$mqtt.on('close', vm.onDisconnect());
-			this.$mqtt.on('offline', vm.onDisconnect());
-			this.$mqtt.on('error', vm.onError(error));
-			this.$mqtt.on('end', vm.onDisconnect());
+			this.$mqtt.on('connect', function() {
+				console.log('connected');
+				vm.onConnect();
+			});
+			this.$mqtt.on('reconnect', function() {
+				console.log('reconnected');
+				vm.onConnect();
+			});
+			this.$mqtt.on('close', function() {
+				console.log('client closed connection');
+				vm.onDisconnect();
+			});
+			this.$mqtt.on('offline', function() {
+				console.log('server closed connection');
+				vm.onDisconnect();
+			});
+			this.$mqtt.on('error', function(error) {
+				console.log('error:', error);
+				vm.onError(error);
+			});
+			this.$mqtt.on('end', function() {
+				console.log('client ended');
+				vm.onDisconnect();
+			});
 		},
 		methods: {
 			onConnect: function() {
@@ -54,7 +72,6 @@
 			},
 			onError: function(error) {
 				this.statusMessage = 'Error';
-				console.log(error);
 				this.isConnected = false;
 				this.updateLastReceived();
 			},

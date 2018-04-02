@@ -13,18 +13,20 @@
     </footer>
   </div>
 </template>
-
 <script>
 import AppNavbar from './components/app-navbar.vue'
 
 export default {
-  name: 'App',
-  components: {
-    AppNavbar
-  }
+    name: 'App',
+    components: {
+      AppNavbar
+    },
+    beforeDestroy: function() {
+      console.log('bye bye!');
+      this.$mqtt.end();
+    }
 }
 </script>
-
 <style>
   main {
     height: calc(100vh - 56px);
@@ -42,10 +44,4 @@ export default {
 .fade-enter, .fade-leave-active {
   opacity: 0
 }
-
-
-
-
-
-
 </style>
