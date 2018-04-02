@@ -12,6 +12,15 @@ router.get('/', (req, res) => {
   res.json({message: 'rest api root access'});
 });
 
+router.route('/auth')
+.post((req, res) => {
+  if (req.body.password == 'password') {
+    res.status(HttpStatus.OK).send();
+  } else {
+    res.status(HttpStatus.UNAUTHORIZED).send();
+  }
+});
+
 router.route('/telemetry')
   .get((req, res) => {
     Telemetry.find({}, (err, telemetry) => {

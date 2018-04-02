@@ -1,7 +1,6 @@
 <template>
     <div id="cockpit">
-        <div class="status">
-        </div>
+        <div class="status"></div>
         <div class="map">
             <map-vue></map-vue>
         </div>
@@ -15,10 +14,34 @@
             <power></power>
         </div>
         <div class="sensor sensor4">
-
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#authModal">Enable Controls</button>
         </div>
         <div class="control">
-        </div>        
+        </div>  
+        <div id="authModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Operator Authorization</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-unlock"></i></span>
+                            </div>
+                            <input v-model="password" type="password" class="form-control" placeholder="Operator password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" v-on:click="authorize">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+            </div>      
     </div>
 </template>
 <script>
@@ -27,11 +50,14 @@
     import Thermometer from './Thermometer';
     import Power from './Power';
     import MapVue from './MapVue';
+    import axios from 'axios';
 
     export default {
         data: function() {
             return {
-                controlsEnabled: false
+                controlsEnabled: false,
+                username: 'userx',
+                password: null
             }
         },
         components: {
@@ -43,6 +69,18 @@
         mounted: function() {
             console.log('mounted');
             this.$mqtt.subscribe('telemetry');
+        },
+        methods: {
+            authorize: function() {
+                var vm = this;
+                console.log(this.password);
+                axios.post('api/auth', { username: this.username, password: this.password}).then((res) => {
+                    vm.password = '';
+                    vm.controlsEnabled = true;
+                }).catch((err) => {
+
+                });
+            }
         }
     }
 
