@@ -17,12 +17,20 @@ L.Icon.Default.mergeOptions({
 import axios from 'axios';
 
 export default {
+    mqtt: {
+        'telemetry': function(val) {
+            var telemetry = JSON.parse(val.toString());
+            this.updatePosition(telemetry.latitude, telemetry.longitude);
+        }
+    },
     data: function() {
         return {
             center: [28.542644, -81.212693],
-            zoom: 13,
+            zoom: 11,
             markers: [],
-            markerGroup: null,
+            poiMarkerGroup: null,
+            vehicleMarkerGroup: null,
+            vehicleMarker: null,
             map: null
         }
     },
@@ -54,12 +62,13 @@ export default {
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
-            this.markerGroup = L.layerGroup().addTo(this.map);
+            this.poiMarkerGroup = L.layerGroup().addTo(this.map);
+            this.vehicleMarkerGroup = L.layerGroup().addTo(this.map);
         },
         addMarker: function(event) {
             var vm = this;
             var marker = L.marker(event.latlng, {})
-                .addTo(this.markerGroup)
+                .addTo(this.poiMarkerGroup)
                 .bindPopup('<h1>sample text</h1>')
                 .bindTooltip('tooltip')
                 .on('contextmenu', function(event) {
@@ -86,7 +95,7 @@ export default {
                         lng: point.longitude
                     }
                 L.marker(latlng, {})
-                    .addTo(vm.markerGroup)
+                    .addTo(vm.poiMarkerGroup)
                     .bindPopup('Point of Interest')
                     //.bindTooltip('tooltip')
                     .on('contextmenu', function(event) {
@@ -98,12 +107,22 @@ export default {
             });
         },
         removeMarker: function(markerId, lat, lng) {
-            this.markerGroup.removeLayer(markerId);
+            this.poiMarkerGroup.removeLayer(markerId);
             axios.delete('api/points?latitude='+lat+'&longitude='+lng).then((res) => {
                 console.log(res);
             }).catch((err) => {
 
             });
+        },
+        updatePosition: function(latitude, longitude) {
+            console.log('mapvue new quadcopter position: ' + latitude + ', ' + longitude);
+            var vm = this;
+            var pos = new L.LatLng(latitude, longitude);
+            if (this.vehicleMarker == null) {
+                this.vehicleMarker = L.marker(pos).bindTooltip('Current position').addTo(vm.vehicleMarkerGroup);
+            } else {
+                this.vehicleMarker.setLatLng(pos).update();
+            }
         }
     }
 }
