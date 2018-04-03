@@ -1,14 +1,5 @@
 <template>
-    <radial-gauge v-model="temperature" 
-    v-bind:options="{
-        title: 'Temperature',
-        units: 'degrees',
-        minValue: 0,
-        maxValue: 100,
-        animationRule: 'linear',
-        animationDuration: 200,
-        animationValue: true
-    }"></radial-gauge>
+    <radial-gauge v-model="temperature" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
@@ -21,7 +12,36 @@
         },
         data: function() {
             return {
-                temperature: 0
+                temperature: 0,
+                gaugeOptions: {
+                    title: 'Temperature',
+                    units: '°C',
+                    minValue: 0,
+                    maxValue: 100,
+                    colorMajorTicks: '#dddddd',
+                    colorMinorTicks: '#dddddd',
+                    colorTitle: '#eeeeee',
+                    colorPlate: '#222222',
+                    borders: true,
+                    colorUnits: '#cccccc',
+                    colorNumbers: '#eeeeee',
+                    colorBorderOuter: '#333333',
+                    colorBorderOuterEnd: '#111111',
+                    colorBorderMiddle: '#222222',
+                    colorBorderMiddleEnd: '#111',
+                    colorBorderInner: '#111',
+                    colorBorderInnerEnd: '#333',
+                    highlights: [
+                        {
+                            from: 0,
+                            to: 10,
+                            color: '#0000ff'
+                        }
+                    ],
+                    animationRule: 'linear',
+                    animationDuration: 200,
+                    animationValue: true,
+                }
             }
         },
         components: {

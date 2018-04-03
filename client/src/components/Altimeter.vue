@@ -1,15 +1,5 @@
 <template>
-    <radial-gauge v-model="altitude" 
-    v-bind:options="{
-        title: 'Altitude',
-        units: 'feet',
-        minValue: 0,
-        maxValue: 100,
-        animation: true,
-        animationRule: 'linear',
-        animationDuration: 200,
-        animationValue: true
-        }"></radial-gauge>
+    <radial-gauge v-model="altitude" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
@@ -22,7 +12,37 @@
         },
         data: function() {
             return {
-                altitude: 0
+                altitude: 0,
+                gaugeOptions: {
+                    title: 'Altitude',
+                    units: 'feet',
+                    minValue: 0,
+                    maxValue: 100,
+                    colorMajorTicks: '#dddddd',
+                    colorMinorTicks: '#dddddd',
+                    colorTitle: '#eeeeee',
+                    colorPlate: '#222222',
+                    borders: true,
+                    colorUnits: '#cccccc',
+                    colorNumbers: '#eeeeee',
+                    colorBorderOuter: '#333333',
+                    colorBorderOuterEnd: '#111111',
+                    colorBorderMiddle: '#222222',
+                    colorBorderMiddleEnd: '#111',
+                    colorBorderInner: '#111',
+                    colorBorderInnerEnd: '#333',
+                    highlights: [
+                        {
+                            from: 0,
+                            to: 10,
+                            color: '#0000ff'
+                        }
+                    ],
+                    animation: true,
+                    animationRule: 'linear',
+                    animationDuration: 200,
+                    animationValue: true
+                }
             }
         },
         components: {
