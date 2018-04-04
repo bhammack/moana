@@ -1,5 +1,6 @@
 <template>
     <div id="cockpit" class="cockpit-grid">
+        <div style="display:none;">Icons made from <a href="http://www.onlinewebfonts.com/icon">Icon Fonts</a> is licensed by CC BY 3.0</div> 
         <div class="status">
 
         </div>
@@ -90,7 +91,6 @@
             }
         }
     }
-
 </script>
 <style>
     .cockpit-grid {

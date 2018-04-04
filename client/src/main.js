@@ -10,6 +10,9 @@ import router from './router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
+
+//import './images/favicon-16x16.png';
+
 // I hate this library. It needs to go.
 import VueMqtt from 'vue-mqtt';
 //import mqtt from 'mqtt';
