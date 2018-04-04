@@ -2,7 +2,14 @@
     <div id="cockpit" class="cockpit-grid">
         <div style="display:none;">Icons made from <a href="http://www.onlinewebfonts.com/icon">Icon Fonts</a> is licensed by CC BY 3.0</div> 
         <div class="status">
-
+            <div class="card-group" style="height: 100%">
+                <div class="card card-inactive"><img class="card-img" src="./../svg/quadcopter_liftoff.svg"></div>
+                <div class="card card-active"><img class="card-img" src="./../svg/quadcopter_landing.svg"></div>
+                <div class="card"><img class="card-img" src="./../svg/quadcopter_load.svg"></div>
+                <div class="card"><img class="card-img" src="./../svg/quadcopter_unload.svg"></div>
+                <div class="card"><img class="card-img" src="./../svg/quadcopter_lumination.svg"></div>
+                <div class="card"><img class="card-img" src="./../svg/quadcopter_payload.svg"></div>
+            </div>            
         </div>
         <div class="map">
             <map-vue></map-vue>
@@ -97,7 +104,7 @@
         height: 100%;
         display: grid;
         grid-template-columns: auto min-content;
-        grid-template-rows: 50px min-content auto;
+        grid-template-rows: 100px min-content auto;
         grid-template-areas:
             "map status"
             "map sensor-grid"
@@ -146,5 +153,17 @@
 
     .sensor4 {
         grid-area: sensor4;
+    }
+
+    .card {
+        background-color: slategray;
+    }
+
+    .card-inactive {
+        background-color: slategray;
+    }
+
+    .card-active {
+        background-color: gold;
     }
 </style>
