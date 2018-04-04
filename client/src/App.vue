@@ -1,7 +1,7 @@
 <template>
   <div id="vue-app">
     <header>
-      <app-navbar></app-navbar>
+      <navbar></navbar>
     </header>
     <main>
       <transition name="fade">
@@ -9,21 +9,25 @@
       </transition>
     </main>
     <footer>
-      
     </footer>
   </div>
 </template>
 <script>
-import AppNavbar from './components/app-navbar.vue'
-
+import Navbar from './components/Navbar.vue'
 export default {
     name: 'App',
     components: {
-      AppNavbar
+      'navbar': Navbar
     },
-    beforeDestroy: function() {
-      console.log('bye bye!');
-      this.$mqtt.end();
+    created: function() {
+      window.onbeforeunload = this.onBeforeUnload;
+    },
+    methods: {
+      onBeforeUnload: function() {
+        this.$mqtt.end(false, function() {
+          console.log('connection closed... smell ya later');
+        });
+      }
     }
 }
 </script>

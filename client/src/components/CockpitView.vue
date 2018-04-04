@@ -105,6 +105,8 @@
         display: grid;
         grid-template-columns: auto min-content;
         grid-template-rows: 100px min-content auto;
+        /* grid-column-gap: 10px; */
+        /* grid-row-gap:  */
         grid-template-areas:
             "map status"
             "map sensor-grid"
