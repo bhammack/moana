@@ -1,22 +1,24 @@
 <template>
-    <div id="cockpit">
+    <div id="cockpit" class="cockpit-grid">
         <div class="status">
 
         </div>
         <div class="map">
             <map-vue></map-vue>
         </div>
-        <div class="sensor sensor1">
-            <altimeter></altimeter>
-        </div>
-        <div class="sensor sensor2">
-            <thermometer></thermometer>
-        </div>
-        <div class="sensor sensor3">
-            <power></power>
-        </div>
-        <div class="sensor sensor4">
-            <compass></compass>
+        <div class="sensor-grid">
+            <div class="sensor sensor1">
+                <altimeter></altimeter>
+            </div>
+            <div class="sensor sensor2">
+                <thermometer></thermometer>
+            </div>
+            <div class="sensor sensor3">
+                <power></power>
+            </div>
+            <div class="sensor sensor4">
+                <compass></compass>
+            </div>
         </div>
         <div class="control">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#authModal">Enable Controls</button>
@@ -91,16 +93,25 @@
 
 </script>
 <style>
-    #cockpit {
+    .cockpit-grid {
         height: 100%;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: 100px repeat(2, 1fr) 100px;
+        grid-template-columns: auto min-content;
+        grid-template-rows: 50px min-content auto;
         grid-template-areas:
-            "map map status status"
-            "map map sensor1 sensor2"
-            "map map sensor3 sensor4"
-            "map map control control";
+            "map status"
+            "map sensor-grid"
+            "map control";
+    }
+
+    .sensor-grid {
+        display: grid;
+        grid-area: sensor-grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            "sensor1 sensor2"
+            "sensor3 sensor4";
     }
 
     .map {
@@ -113,10 +124,12 @@
 
     .status {
         grid-area: status;
+        background-color: #333;
     }
 
     .control {
         grid-area: control;
+        background-color: #333;
     }
 
     .sensor1 {
