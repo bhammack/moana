@@ -28,14 +28,14 @@
 		data: function() {
 			return {
 				isConnected: false,
-				statusMessage: 'Disconnected',
+				statusMessage: 'Not Connected',
 				lastReceived: null
 			}
 		},
-		mounted: function() {
+		created: function() {
 			var vm = this;
 			this.$mqtt.on('connect', function() {
-				console.log('connected');
+				vm.$mqtt.subscribe('telemetry');
 				vm.onConnect();
 			});
 			this.$mqtt.on('reconnect', function() {
