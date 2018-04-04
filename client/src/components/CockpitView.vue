@@ -1,6 +1,8 @@
 <template>
     <div id="cockpit">
-        <div class="status"></div>
+        <div class="status">
+
+        </div>
         <div class="map">
             <map-vue></map-vue>
         </div>
@@ -14,9 +16,10 @@
             <power></power>
         </div>
         <div class="sensor sensor4">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#authModal">Enable Controls</button>
+            <compass></compass>
         </div>
         <div class="control">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#authModal">Enable Controls</button>
         </div>  
         <div id="authModal" class="modal" tabindex="-1">
             <div class="modal-dialog">
@@ -49,6 +52,7 @@
     import Altimeter from './Altimeter';
     import Thermometer from './Thermometer';
     import Power from './Power';
+    import Compass from './Compass';
     import MapVue from './MapVue';
     import axios from 'axios';
 
@@ -64,7 +68,8 @@
             'map-vue': MapVue,
             'altimeter': Altimeter,
             'thermometer': Thermometer,
-            'power': Power
+            'power': Power,
+            'compass': Compass
         },
         mounted: function() {
             console.log('mounted');
@@ -89,12 +94,13 @@
     #cockpit {
         height: 100%;
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: 30px repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 100px repeat(2, 1fr) 100px;
         grid-template-areas:
-            "status status status status status"
-            "sensor1 map map map sensor2"
-            "sensor3 map map map sensor4";
+            "map map status status"
+            "map map sensor1 sensor2"
+            "map map sensor3 sensor4"
+            "map map control control";
     }
 
     .map {
@@ -102,11 +108,15 @@
     }
 
     .sensor {
-        background-color: black;
+        background-color: #111;
     }
 
     .status {
         grid-area: status;
+    }
+
+    .control {
+        grid-area: control;
     }
 
     .sensor1 {
@@ -123,9 +133,5 @@
 
     .sensor4 {
         grid-area: sensor4;
-    }
-
-    .control {
-        grid-area: control;
     }
 </style>

@@ -15,9 +15,11 @@
                 temperature: 0,
                 gaugeOptions: {
                     title: 'Temperature',
-                    units: '°C',
+                    units: '°F',
                     minValue: 0,
                     maxValue: 100,
+                    height: 300,
+                    width: 300,
                     colorMajorTicks: '#dddddd',
                     colorMinorTicks: '#dddddd',
                     colorTitle: '#eeeeee',
@@ -34,8 +36,18 @@
                     highlights: [
                         {
                             from: 0,
-                            to: 10,
-                            color: '#0000ff'
+                            to: 32,
+                            color: 'blue'
+                        },
+                        {
+                            from: 32,
+                            to: 70,
+                            color: 'grey'
+                        },
+                        {
+                            from: 70,
+                            to: 100,
+                            color: 'green'
                         }
                     ],
                     animationRule: 'linear',

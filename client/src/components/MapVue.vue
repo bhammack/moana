@@ -5,6 +5,8 @@
 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+const TILE_LAYER_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_LAYER_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 // Weird webpack related leaflet configuration...
 delete L.Icon.Default.prototype._getIconUrl;
@@ -59,9 +61,7 @@ export default {
             this.map.on('click', function(event) {
                 vm.addMarker(event);
             });
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(this.map);
+            L.tileLayer(TILE_LAYER_URL, { attribution: TILE_LAYER_ATTR }).addTo(this.map);
             this.poiMarkerGroup = L.layerGroup().addTo(this.map);
             this.vehicleMarkerGroup = L.layerGroup().addTo(this.map);
         },

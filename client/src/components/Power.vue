@@ -1,8 +1,8 @@
 <template>
-    <linear-gauge v-model="power" v-bind:options="gaugeOptions"></linear-gauge>
+    <radial-gauge v-model="power" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
-    import LinearGauge from 'vue-canvas-gauges/src/LinearGauge';
+    import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
     export default {
         mqtt: {
             'telemetry': function(val) {
@@ -18,16 +18,18 @@
                     colorTitle: '#eee',
                     colorNumbers: '#eee',
                     colorUnits: '#eee',
+                    height: 300,
+                    width: 300,
                     minValue: 0,
                     maxValue: 100,
                     barBeginCircle: false,
                     colorPlate: '#222',
-                    needleType: 'line',
-                    numberSide: 'left',
-                    needleSide: 'left',
-                    tickSide: 'left',
+
+                    //numberSide: 'left',
+                    //needleSide: 'left',
+                    //tickSide: 'left',
                     units: 'Voltage',
-                    width: 150,
+                    //width: 150,
                     borders: true,
                     highlights: [
                         {
@@ -45,12 +47,25 @@
                             to: 100,
                             color: 'green'
                         }
-                    ]
+                    ],
+                    colorMajorTicks: '#dddddd',
+                    colorMinorTicks: '#dddddd',
+                    colorTitle: '#eeeeee',
+                    colorPlate: '#222222',
+                    borders: true,
+                    colorUnits: '#cccccc',
+                    colorNumbers: '#eeeeee',
+                    colorBorderOuter: '#333333',
+                    colorBorderOuterEnd: '#111111',
+                    colorBorderMiddle: '#222222',
+                    colorBorderMiddleEnd: '#111',
+                    colorBorderInner: '#111',
+                    colorBorderInnerEnd: '#333'
                 }
             }
         },
         components: {
-            'linear-gauge': LinearGauge
+            'radial-gauge': RadialGauge
         }
     }
 </script>
