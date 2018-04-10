@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const HttpStatus = require('http-status-codes');
-
 // Mongoose models
 var Telemetry = require('../models/telemetry');
 var Points = require('../models/points');
 // https://gist.github.com/subfuzion/669dfae1d1a27de83e69
+
+const auth_secret = process.env.AUTH_SECRET || 'password';
 
 // Get the root of the API. Use this as a help to show what endpoints are available.
 router.get('/', (req, res) => {
@@ -14,7 +15,7 @@ router.get('/', (req, res) => {
 
 router.route('/auth')
 .post((req, res) => {
-  if (req.body.password == 'password') {
+  if (req.body.password == auth_secret) {
     res.status(HttpStatus.OK).send();
   } else {
     res.status(HttpStatus.UNAUTHORIZED).send();
