@@ -3,7 +3,7 @@ const Telemetry = require('../models/telemetry');
 
 // Custom override function to determine if a json object has a property.
 // https://github.com/mcollina/mosca/wiki/Authentication-&-Authorization
-Object.prototype.hasOwnProperty = function(property) {
+Object.prototype.hasOwnProperty = function (property) {
     return this[property] !== undefined;
 };
 
@@ -45,22 +45,27 @@ broker.on('unsubscribed', (topic, client) => {
 broker.on('published', (packet, client) => {
     //console.log(packet);
     if (packet.topic == 'telemetry') {
-      var obj = JSON.parse(packet.payload.toString());
-      var telemetry = new Telemetry();
-      telemetry.altitude = obj.altitude;
-      telemetry.power = obj.power;
-      telemetry.temperature = obj.temperature;
-      telemetry.latitude = obj.latitude;
-      telemetry.longitude = obj.longitude;
-      telemetry.eventCode = obj.eventCode;
+        try {
+            var obj = JSON.parse(packet.payload.toString());
+            var telemetry = new Telemetry();
+            telemetry.altitude = obj.altitude;
+            telemetry.power = obj.power;
+            telemetry.temperature = obj.temperature;
+            telemetry.latitude = obj.latitude;
+            telemetry.longitude = obj.longitude;
+            telemetry.eventCode = obj.eventCode;
 
-      telemetry.save((err) => {
-        if (err) {
-          console.log('error on saving telemetry packet');
-        } else {
-          console.log('telemetry packet captured');
+            telemetry.save((err) => {
+                if (err) {
+                    console.log('error on saving telemetry packet');
+                } else {
+                    console.log('telemetry packet captured');
+                }
+            });
+        } catch(err) {
+            console.log('Could not save telemetry packet');
+            console.log(packet.payload.toString());
         }
-      });
     }
 });
 

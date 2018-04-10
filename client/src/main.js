@@ -18,8 +18,8 @@ import VueMqtt from 'vue-mqtt';
 //import mqtt from 'mqtt';
 
 
-//Vue.use(VueMqtt, 'ws://localhost:3000', {});
-Vue.use(VueMqtt, 'ws://broker.mqttdashboard.com:8000/mqtt');
+Vue.use(VueMqtt, 'ws://localhost:3000', {});
+//Vue.use(VueMqtt, 'ws://broker.mqttdashboard.com:8000/mqtt');
 Vue.config.productionTip = false;
 var vm = new Vue({
   el: '#app',

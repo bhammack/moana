@@ -1,9 +1,11 @@
 <template>
      <div>
         <div id="controls">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#authModal">Enable Controls</button>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
+            <button type="button" class="btn btn-danger btn-lg btn-block"><i class="fa fa-power-off"></i> Emergency Power Off</button>
+            <button type="button" class="btn btn-info btn-lg btn-block"><i class="fa fa-medkit"></i> Release Payload</button>
         </div>
-        <div id="authModal" class="modal" tabindex="-1">
+        <div id="authModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
