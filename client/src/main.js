@@ -13,7 +13,8 @@ import 'font-awesome/css/font-awesome.min.css';
 // I hate this library.
 import VueMqtt from 'vue-mqtt';
 
-const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
+//const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
+const mqtt_host = 'ws://localhost:3000';
 const mqtt_options = {}
 Vue.use(VueMqtt, mqtt_host, mqtt_options);
 Vue.config.productionTip = false;
