@@ -15,7 +15,9 @@ import VueMqtt from 'vue-mqtt';
 
 //const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
 const mqtt_host = 'ws://localhost:3000';
-const mqtt_options = {}
+const mqtt_options = {
+  reconnectPeriod: 5000
+}
 Vue.use(VueMqtt, mqtt_host, mqtt_options);
 Vue.config.productionTip = false;
 var vm = new Vue({

@@ -39,8 +39,10 @@
 				vm.onConnect();
 			});
 			this.$mqtt.on('reconnect', function() {
-				console.log('reconnected');
-				vm.onConnect();
+				if (vm.$mqtt.connected) {
+					vm.onConnect();
+					console.log('reconnected');
+				}
 			});
 			this.$mqtt.on('close', function() {
 				console.log('client closed connection');
