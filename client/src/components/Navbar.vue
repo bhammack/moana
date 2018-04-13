@@ -39,6 +39,7 @@
 				vm.onConnect();
 			});
 			this.$mqtt.on('reconnect', function() {
+				// This event fires when the client is ATTEMPTING a reconnection, not actually when a reconnect happens.
 				if (vm.$mqtt.connected) {
 					vm.onConnect();
 					console.log('reconnected');

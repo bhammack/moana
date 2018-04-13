@@ -36,7 +36,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-// Server start ===========================================================================================================================
+// Server creation ========================================================================================================================
 const server = http.createServer(app);
 broker.attachHttpServer(server);
 

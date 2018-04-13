@@ -1,10 +1,12 @@
 <template>
      <div>
         <div id="controls">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
-            <button type="button" :disabled="!controlsEnabled" class="btn btn-danger"><i class="fa fa-power-off"></i> Emergency Power Off</button>
-            <button type="button" :disabled="!controlsEnabled" class="btn btn-info"><i class="fa fa-medkit"></i> Release Payload</button>
-            <button type="button" :disabled="!controlsEnabled" class="btn btn-info"><i class="fa fa-crosshairs"></i> Calibrate Position</button>
+            <div class="btn-group-vertical">
+                <button type="button" :disabled="controlsEnabled" class="btn btn-primary" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
+                <button type="button" :disabled="!controlsEnabled" class="btn btn-danger"><i class="fa fa-power-off"></i> Emergency Power Off</button>
+                <button type="button" :disabled="!controlsEnabled" class="btn btn-info"><i class="fa fa-medkit"></i> Release Payload</button>
+                <button type="button" :disabled="!controlsEnabled" class="btn btn-info"><i class="fa fa-crosshairs"></i> Calibrate Position</button>
+            </div>
         </div>
         <div id="authModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
