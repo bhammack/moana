@@ -9,9 +9,6 @@ setInterval(function() {
     });
 }, 1000);
 
-
-
-
 function generateTelemetry() {
     return {
         latitude: randInt(28550000, 28500000) / 1000000.0,

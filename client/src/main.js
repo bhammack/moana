@@ -13,11 +13,18 @@ import 'font-awesome/css/font-awesome.min.css';
 // I hate this library.
 import VueMqtt from 'vue-mqtt';
 
+// Dynamically get the current server's hosting information to connect via websockets.
+const mqtt_protocol = 'ws';
+const mqtt_hostname = window.location.hostname;
+const mqtt_port = window.location.port;
+
 //const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
-const mqtt_host = 'ws://localhost:3000';
+const mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port;
+
 const mqtt_options = {
   reconnectPeriod: 5000
 }
+console.log('Connecting to mqtt broker: ' + mqtt_host);
 Vue.use(VueMqtt, mqtt_host, mqtt_options);
 Vue.config.productionTip = false;
 var vm = new Vue({
