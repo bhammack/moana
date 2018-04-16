@@ -4,7 +4,9 @@ var client = mqtt.connect('ws://localhost:3000');
 
 setInterval(function() {
     var t = generateTelemetry();
-    client.publish('telemetry', JSON.stringify(t));
+    client.publish('telemetry', JSON.stringify(t), {
+        retain: true
+    });
 }, 1000);
 
 
