@@ -1,6 +1,6 @@
 <template>
      <div>
-        <div id="controls">
+        <div id="controls" v-on:keyup.space="console.log('test');">
             <div class="btn-group-vertical">
                 <button type="button" :disabled="controlsEnabled" class="btn btn-primary" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
                 <button type="button" :disabled="!controlsEnabled" class="btn btn-danger"><i class="fa fa-power-off"></i> Emergency Power Off</button>
@@ -61,7 +61,29 @@
                 }).catch((err) => {
 
                 });
+            },
+            releasePayload: function() {
+                console.log('Payload released...');
+                // TODO: Add logic.
+            },
+            emergencyLand: function() {
+                console.log('Emergency Land initiated...');
+                // TODO: Add logic.
             }
+        },
+        mounted: function() {
+            var vm = this;
+            window.addEventListener('keyup', function(event) {
+                if (vm.controlsEnabled) {
+                    if (event.keyCode == 32) {
+                        // SPACE
+                        vm.releasePayload();
+                    } else if (event.keyCode == 8) {
+                        // BACKSPACE
+                        vm.emergencyLand();
+                    }
+                }
+            });
         }
     }
 </script>
