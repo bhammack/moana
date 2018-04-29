@@ -1,82 +1,71 @@
 #! /usr/bin/python
-
 # API mode must be enabled on the XBee device in order to work with this script.
+
+import time
+import serial
 
 # https://pypi.python.org/pypi/paho-mqtt/1.1
 import paho.mqtt.client as mqtt
-
 # https://pypi.python.org/pypi/XBee
-from xbee import XBee, ZigBee
-import serial
+from xbee import XBee
 
-# The callback method is called whenever data is received.
-def publish_data(data):
-	client.publish('telemetry', {}, qos=0, retain=True), 
-	print(data)
+
+HOSTNAME = "broker.mqttdashboard.com"
+PORT = 1883
+TELEMETRY_TOPIC = 'telemetry'
+CONTROL_TOPIC = 'control'
+
+BAUD_RATE = 9600
+SERIAL_ADDR = '/dev/ttyUSB0'
+
+#serial_port = serial.Serial(SERIAL_ADDR, BAUD_RATE);
+#xbee = XBee(serial_port, callback=on_telemetry)
+
 
 def on_connect(client, userdata, flags, rc):
-	print("Connected with result code:", str(rc))
-	# subs happen here
+	print("Connected to " + HOSTNAME + ":" + str(PORT))
+	client.subscribe(CONTROL_TOPIC)
 	
-def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
-	
-def on_publish(client, userdata, mid):
-	pass
-	
-def on_subscribe(client, userdata, mid, granted_qos):
-	pass
-	
-def on_unsubscribe(client, userdata, mid):
-	pass
+def on_disconnect(client, userdata, rc):
+	print("Disconnected from broker with rc:", rc)
 	
 def on_control(client, userdata, message):
-	print(message)
+	payload = str(message.payload)
+	print(message.topic, payload)
+	# send the data to an xbee
+	# http://python-xbee.readthedocs.io/en/latest/#sending-data-to-an-xbee-device
+	#xbee.send("at", frame='A' command='MY' parameter=None)
 
+def on_telemetry(data):
+	# publish the telemetry data to mqtt
+	#client.publish(TELEMETRY_TOPIC, '{}', 0, True)
+	print(data)
+	
+print("Initalizing communications relay...")
 client = mqtt.Client()
 client.on_connect = on_connect
-client.on_message = on_message
-client.on_publish = on_publish
-client.on_subscribe = on_subscribe
-client.on_unsubscribe = on_unsubscribe
-client.message_callback_add('control', on_control)
-
-client.connect('iot.eclipse.org', 1883, 60)
-
-# other loop functions are available.
-client.loop_forever()
+client.on_disconnect = on_disconnect
+client.message_callback_add(CONTROL_TOPIC, on_control)
+client.connect(HOSTNAME, PORT)
 
 
-baud_rate = 9600
-serial_port = serial.Serial('/dev/ttyUSB0', baud_rate);
-xbee = XBee(serial_port, callback=publish_data)
-
-# you may need to use bytearray(b'\x01\x02') instead of the raw bytestring.
-DIO_on = b'\x05'
-DIO_off = b'\x04'
-
-#xbee.remote_at(dest_addr=b'\x56\x78', command='D2', parameter=b'\x04')
-# looping thread. This will block until valid frames are received.
+client.loop_start()
+#client.loop_forever()
 while True:
 	try:
-		#xbee.wait_read_frame()
+		# since we're using asynchronous callbacks for both mqtt and xbee,
+		# we don't need anything in the thread loop.
+		
 		time.sleep(0.001)
 	except KeyboardInterrupt:
 		break
+
+# Kill MQTT connection.
+client.loop_stop()
+client.disconnect()
+
+# Kill XBee connection.
 xbee.halt()
 serial_port.close()
 
-
-
-'''
-while true
-	determine if there's telemetry data to read in
-	if there is, publish it to the server
-	
-	determine if there's control data to read from mqtt
-	if there is, publish it to the xbee
-	
-	These two operations cannot block on each other, otherwise one will occur immediately following the other.
-	OR, if it is necessary to implement some blocking, make sure it is on telemetry reception
-'''
 
