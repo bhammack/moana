@@ -36,6 +36,8 @@
 </template>
 <script>
     import axios from 'axios';
+    const SPACE = 32;
+    const BACKSPACE = 8;
 
     export default {
         mqtt: {
@@ -75,11 +77,9 @@
             var vm = this;
             window.addEventListener('keyup', function(event) {
                 if (vm.controlsEnabled) {
-                    if (event.keyCode == 32) {
-                        // SPACE
+                    if (event.keyCode == SPACE) {
                         vm.releasePayload();
-                    } else if (event.keyCode == 8) {
-                        // BACKSPACE
+                    } else if (event.keyCode == BACKSPACE) {
                         vm.emergencyLand();
                     }
                 }

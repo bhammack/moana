@@ -7,6 +7,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 const TILE_LAYER_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_LAYER_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const ENTER = 13;
+const SHIFT = 16;
 
 // Weird webpack related leaflet configuration...
 delete L.Icon.Default.prototype._getIconUrl;
@@ -39,6 +41,16 @@ export default {
     mounted: function() {
         this.buildMap();
         this.getMarkers();
+        var vm = this;
+        window.addEventListener('keyup', function(event) {
+            if (vm.controlsEnabled) {
+                if (event.keyCode == ENTER) {
+                    console.log('Mark current position as POI');
+                } else if (event.keyCode == SHIFT) {
+                    console.log('Calibrate position')
+                }
+            }
+        });
     },
     beforeDestroy: function() {
         console.log('destroying map...');
