@@ -1,12 +1,22 @@
 <template>
      <div>
         <div id="controls" v-on:keyup.space="console.log('test');">
-            <div class="btn-group-vertical">
+            <div class="d-flex flex-row">
+            <div class="btn-group">
                 <button type="button" :disabled="controlsEnabled" class="btn btn-primary" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
                 <button type="button" :disabled="!controlsEnabled" class="btn btn-danger"><i class="fa fa-power-off"></i> Emergency Power Off</button>
                 <button type="button" :disabled="!controlsEnabled" class="btn btn-info"><i class="fa fa-medkit"></i> Release Payload</button>
-                <button type="button" :disabled="!controlsEnabled" class="btn btn-info"><i class="fa fa-crosshairs"></i> Calibrate Position</button>
             </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button type="button" class="btn btn-info" v-on:click="calibratePosition"><i class="fa fa-crosshairs"></i> Calibrate Position</button>
+                </div>
+                <input v-model.number="latitude" type="text" maxlength="10" class="form-control" placeholder="Latitude">
+                <input v-model.number="longitude" type="text" maxlength="10" class="form-control" placeholder="Longitude">
+            </div>
+            </div>
+            
+            
         </div>
         <div id="authModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
@@ -50,7 +60,9 @@
             return {
                 username: 'userx',
                 password: '',
-                controlsEnabled: false
+                controlsEnabled: false,
+                latitude: 0,
+                longitude: 0
             }
         },
         methods: {
@@ -66,11 +78,23 @@
             },
             releasePayload: function() {
                 console.log('Payload released...');
-                // TODO: Add logic.
+                this.$mqtt.publish('control', JSON.stringify({
+                    command: 0
+                }));
             },
             emergencyLand: function() {
                 console.log('Emergency Land initiated...');
-                // TODO: Add logic.
+                this.$mqtt.publish('control', JSON.stringify({
+                    command: 1
+                }));
+            },
+            calibratePosition: function() {
+                var vm = this;
+                console.log('Calibrating position...');
+                this.$mqtt.publish('position', JSON.stringify({
+                    latitude: vm.latitude,
+                    longitude: vm.longitude
+                }));
             }
         },
         mounted: function() {

@@ -82,7 +82,7 @@ export default {
             var marker = L.marker(event.latlng, {})
                 .addTo(this.poiMarkerGroup)
                 .bindPopup('<h1>sample text</h1>')
-                .bindTooltip('tooltip')
+                .bindTooltip(event.latlng.lat + ', ' + event.latlng.lng)
                 .on('contextmenu', function(event) {
                     vm.removeMarker(event.target._leaflet_id, event.target._latlng.lat, event.target._latlng.lng);
                 });
@@ -109,7 +109,7 @@ export default {
                 L.marker(latlng, {})
                     .addTo(vm.poiMarkerGroup)
                     .bindPopup('Point of Interest')
-                    //.bindTooltip('tooltip')
+                    .bindTooltip(latlng.lat + ', ' + latlng.lng)
                     .on('contextmenu', function(event) {
                         vm.removeMarker(event.target._leaflet_id, event.target._latlng.lat, event.target._latlng.lng);
                     });

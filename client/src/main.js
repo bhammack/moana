@@ -18,8 +18,8 @@ const mqtt_protocol = 'ws';
 const mqtt_hostname = window.location.hostname;
 const mqtt_port = window.location.port;
 
-//const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
-const mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port;
+const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
+//const mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port;
 
 const mqtt_options = {
   reconnectPeriod: 5000
