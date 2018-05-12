@@ -91,7 +91,7 @@
             calibratePosition: function() {
                 var vm = this;
                 console.log('Calibrating position...');
-                this.$mqtt.publish('position', JSON.stringify({
+                this.$mqtt.publish('calibration', JSON.stringify({
                     latitude: vm.latitude,
                     longitude: vm.longitude
                 }));
