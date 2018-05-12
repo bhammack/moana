@@ -3,10 +3,13 @@ var Schema = mongoose.Schema;
 
 // Mongo auto generates the _id field for each element in the collection.
 var TelemetrySchema = new mongoose.Schema({
-    dateReceived: { type: Date, default: Date.now },
+    dateCreated: Date,          // datetime the vehicle created the packet.
+    dateReceived: { type: Date, default: Date.now }, // datetime the packet was received and saved.
     temperature: Number,        // degrees f
     altitude: Number,           // feet
     power: Number,              // [0-100] percentage as integer
+    heading: Number,            // magnetic heading
+    speed: Number,              // ground speed
     latitude: Number,           // relative or absolute
     longitude: Number,          // relative or absolute
     eventCode: Number           // enumerable
