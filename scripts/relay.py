@@ -5,12 +5,16 @@ import serial
 import datetime
 import math
 import json
+import serial
 
 # https://pypi.python.org/pypi/paho-mqtt/1.1
 import paho.mqtt.client as mqtt
 
 # API mode must be enabled on the XBee device in order to work with this script.
 # https://pypi.python.org/pypi/XBee
+
+# The XBee library may be overkill. We may be able to use just the standard pySerial library.
+# https://stackoverflow.com/questions/13436471/how-can-i-send-strings-of-data-to-an-xbee-with-a-python-library
 from xbee import XBee
 
 HOSTNAME = "broker.mqttdashboard.com"
@@ -30,6 +34,7 @@ LAST_TIMESTAMP = datetime.datetime.now()
 #serial_port = serial.Serial(SERIAL_ADDR, BAUD_RATE);
 #xbee = XBee(serial_port, callback=on_telemetry)
 
+
 # Calculate the next latitude and longitude using a given latlng, heading angle, and distance (in meters).
 def next_position(lat, lng, heading, distance):
     # https://stackoverflow.com/questions/19352921/how-to-use-direction-angle-and-speed-to-calculate-next-times-latitude-and-longi
@@ -41,10 +46,16 @@ def next_position(lat, lng, heading, distance):
     finalnewlng = 180 / math.pi * newlng
     return(round(finalnewlat, 6), round(finalnewlng, 6))
 
+
+# Updates the global state with the newest information.
 def update_position(lat, lng, timestamp):
+	global LAST_LATITUDE
+	global LAST_LONGITUDE
+	global LAST_TIMESTAMP
 	LAST_LATITUDE = lat
 	LAST_LONGITUDE = lng
 	LAST_TIMESTAMP = timestamp
+
 
 # Function called when the mqtt client connects to the web server.
 def on_connect(client, userdata, flags, rc):
@@ -52,17 +63,20 @@ def on_connect(client, userdata, flags, rc):
 	client.subscribe(CONTROL_TOPIC)
 	client.subscribe(CALIBRATION_TOPIC)
 
+
 # Function called when the mqtt client disconnects from the web server.
 def on_disconnect(client, userdata, rc):
-	print("Disconnected from broker with rc:", rc)
+	print("Disconnected from broker with rc: %s" % rc)
 
 
 # Function called when the mqtt client receives calibration on the position channel.
 def on_calibration(client, userdata, message):
 	# Save off the newest true position for dead reckoning.
 	payload = json.loads(str(message.payload))
+	print(message.topic, payload)
 	update_position(payload['latitude'], payload['longitude'], datetime.datetime.now())
 	print('Calibrating dead reckoning. Current position is %s, %s' % (LAST_LATITUDE, LAST_LONGITUDE))
+
 
 # Function called when the mqtt client receives commands on the control channel.
 def on_control(client, userdata, message):
@@ -71,6 +85,7 @@ def on_control(client, userdata, message):
 	# send the data to an xbee
 	# http://python-xbee.readthedocs.io/en/latest/#sending-data-to-an-xbee-device
 	#xbee.send("at", frame='A' command='MY' parameter=None)
+
 
 # Function called when data is received from the XBee radio.
 def on_telemetry(data):
@@ -103,6 +118,8 @@ def on_telemetry(data):
 	# Publish the telemetry packet
 	client.publish(TELEMETRY_TOPIC, json.dumps(telemetry), 0, True)
 
+
+# Main entry point for the application.
 def main():
 	print("Initalizing communications relay...")
 	client = mqtt.Client()
@@ -124,8 +141,8 @@ def main():
 			break
 
 	# Kill MQTT connection.
-	client.loop_stop()
 	client.disconnect()
+	client.loop_stop()
 
 	# Kill XBee connection.
 	xbee.halt()
