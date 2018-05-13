@@ -97,7 +97,6 @@
     .status {
         grid-area: status;
         background-color: #333;
-        height: 50px;
     }
 
     .control {
