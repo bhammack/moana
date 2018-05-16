@@ -9,15 +9,23 @@
 import datetime
 from pymavlink import mavutil
 import json
+import serial
 
-BAUD_RATE = 11520
+USB_BAUD = 11520
 DEVICE = '/dev/ttyACM0' # this is actually a usb interface
+
+PORT = '/dev/ttyS0'
+BAUD = 9600
+
+DECIMAL_PLACES = 2
+PACKET_SIZE = 128
 
 # pip install serial
 # pip install pymavlink
 
 class Telemetry(object):
 	def __init__(self):
+		self.data = {}
 		self.attitude_set = False
 		self.vfr_hud_set = False
 
@@ -36,16 +44,16 @@ class Telemetry(object):
 		#self.pitchspeed = msg.pitchspeed
 		#self.rollspeed = msg.rollspeed
 		self.attitude_set = True
-		self.timestamp = datetime.datetime.utcnow().isoformat()
+		self.data['timestamp'] = datetime.datetime.utcnow().isoformat()
 
 	def set_vfr_hud(self, msg):
 		#self.airspeed = msg.airspeed
-		self.groundspeed = msg.groundspeed
-		self.heading = msg.heading
-		self.altitude = msg.alt
+		self.data['groundspeed'] = round(msg.groundspeed, DECIMAL_PLACES)
+		self.data['heading'] = msg.heading
+		self.data['altitude'] = round(msg.alt, DECIMAL_PLACES)
 		#self.climb = msg.climb
 		self.vfr_hud_set = True
-		self.timestamp = datetime.datetime.utcnow().isoformat()
+		self.data['timestamp'] = datetime.datetime.utcnow().isoformat()
 
 	def is_complete(self):
 		return self.attitude_set and self.vfr_hud_set
@@ -128,8 +136,9 @@ def release_payload():
 
 # Main entry point of the application.
 def main():
+	ser = serial.Serial(PORT, BAUD)
 	print('Awaiting heartbeat...')
-	conn = mavutil.mavlink_connection(device=DEVICE, baud=BAUD_RATE, autoreconnect=True)
+	conn = mavutil.mavlink_connection(device=DEVICE, baud=USB_BAUD, autoreconnect=True)
 	conn.wait_heartbeat()
 	print('We have a pulse!')
 	print('Requesting access to the mavlink data stream...')
@@ -137,7 +146,7 @@ def main():
 		conn.target_system, 
 		conn.target_component, 
 		mavutil.mavlink.MAV_DATA_STREAM_ALL, 
-		BAUD_RATE, 
+		USB_BAUD, 
 		True
 	)
 
@@ -152,9 +161,9 @@ def main():
 			t.handle_message(msg)
 
 			if (t.is_complete()):
-				telemetry = json.dumps(t.__dict__)
-				print(telemetry)
-				# Send it away!!
+				telemetry = json.dumps(t.data, separators=(',', ':'))
+				tpacket = telemetry.ljust(PACKET_SIZE).encode('latin-1')
+				ser.write(tpacket)
 				t = Telemetry()
 				
 		except KeyboardInterrupt:
