@@ -6,11 +6,15 @@
 
 # actually, the pixhawk uses these...
 # http://mavlink.org/messages/ardupilotmega
+import datetime
+from pymavlink import mavutil
+import json
 
+BAUD_RATE = 11520
+DEVICE = '/dev/ttyACM0' # this is actually a usb interface
 
 # pip install serial
 # pip install pymavlink
-
 
 class Telemetry(object):
 	def __init__(self):
@@ -25,33 +29,27 @@ class Telemetry(object):
 			self.set_vfr_hud(msg)
 	
 	def set_attitude(self, msg):
-		self.roll = msg.roll
-		self.pitch = msg.pitch
-		self.yaw = msg.yaw
-		self.yawspeed = msg.yawspeed
-		self.pitchspeed = msg.pitchspeed
-		self.rollspeed = msg.rollspeed
+		#self.roll = msg.roll
+		#self.pitch = msg.pitch
+		#self.yaw = msg.yaw
+		#self.yawspeed = msg.yawspeed
+		#self.pitchspeed = msg.pitchspeed
+		#self.rollspeed = msg.rollspeed
 		self.attitude_set = True
+		self.timestamp = datetime.datetime.utcnow().isoformat()
 
 	def set_vfr_hud(self, msg):
-		self.airspeed = msg.airspeed
+		#self.airspeed = msg.airspeed
 		self.groundspeed = msg.groundspeed
 		self.heading = msg.heading
 		self.altitude = msg.alt
-		self.climb = msg.climb
+		#self.climb = msg.climb
 		self.vfr_hud_set = True
+		self.timestamp = datetime.datetime.utcnow().isoformat()
 
 	def is_complete(self):
 		return self.attitude_set and self.vfr_hud_set
 
-
-
-
-from pymavlink import mavutil
-import json
-
-BAUD_RATE = 11520
-DEVICE = '/dev/ttyACM0' # this is actually a usb interface
 
 def handle_message(msg):
 	msg_type = msg.get_type()
@@ -108,37 +106,63 @@ def handle_message(msg):
 		print("New message type received:", msg_type)
 	'''
 
-print('Awaiting heartbeat...')
-conn = mavutil.mavlink_connection(device=DEVICE, baud=BAUD_RATE, autoreconnect=True)
-conn.wait_heartbeat()
-print('We have a pulse!')
-print('Requesting access to the mavlink data stream...')
-conn.mav.request_data_stream_send(
-	conn.target_system, 
-	conn.target_component, 
-	mavutil.mavlink.MAV_DATA_STREAM_ALL, 
-	BAUD_RATE, 
-	True
-)
+
+# Function called when xbee unit receives data. This will always be a control command.
+def on_control(data):
+	# send the land command.
+	#conn.mav.command_long_send()
+	pass
 
 
+# Function called to issue the emergency land command / motor lock to the autopilot.
+def emergency_land():
+	# https://discuss.ardupilot.org/t/pymavlink-disarm-command/25425
+	# MAV_CMD_NAV_LAND???
+	pass
 
-t = Telemetry()
-while(True):
-    try:
-		# enter what appears to be a non-blocking loop. A blocking mode seems available.
-		msg = conn.recv_match(blocking=False)
-		if not msg: 
-			continue
-		handle_message(msg)
-		t.handle_message(msg)
 
-		if (t.is_complete()):
-			print(json.dumps(t.__dict__))
-			t = Telemetry()
-			
-    except KeyboardInterrupt:
-		break
+# Function called to release the payload. Is this necessary?
+def release_payload():
+	pass
 
-conn.close()
-print('Goodbye!')
+
+# Main entry point of the application.
+def main():
+	print('Awaiting heartbeat...')
+	conn = mavutil.mavlink_connection(device=DEVICE, baud=BAUD_RATE, autoreconnect=True)
+	conn.wait_heartbeat()
+	print('We have a pulse!')
+	print('Requesting access to the mavlink data stream...')
+	conn.mav.request_data_stream_send(
+		conn.target_system, 
+		conn.target_component, 
+		mavutil.mavlink.MAV_DATA_STREAM_ALL, 
+		BAUD_RATE, 
+		True
+	)
+
+	t = Telemetry()
+	while(True):
+		try:
+			# enter what appears to be a non-blocking loop. A blocking mode seems available.
+			msg = conn.recv_match(blocking=False)
+			if not msg: 
+				continue
+			handle_message(msg)
+			t.handle_message(msg)
+
+			if (t.is_complete()):
+				telemetry = json.dumps(t.__dict__)
+				print(telemetry)
+				# Send it away!!
+				t = Telemetry()
+				
+		except KeyboardInterrupt:
+			break
+
+	conn.close()
+	print('Goodbye!')
+
+
+if __name__ == '__main__':
+	main()

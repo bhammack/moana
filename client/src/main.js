@@ -17,9 +17,14 @@ import VueMqtt from 'vue-mqtt';
 const mqtt_protocol = 'ws';
 const mqtt_hostname = window.location.hostname;
 const mqtt_port = window.location.port;
+var mqtt_host;
 
-const mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
-//const mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port;
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV == 'development') {
+  mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
+} else {
+  mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port;
+}
 
 const mqtt_options = {
   reconnectPeriod: 5000

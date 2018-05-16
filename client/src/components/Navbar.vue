@@ -13,7 +13,7 @@
 			<!-- <li class="nav-item"><a class="nav-link" href="/#/map">Map</a></li> -->
 			<li class="nav-item"><a class="nav-link" href="/#/about">About</a></li>
 		</ul>
-		<p class="nav navbar-text">Last updated: {{ lastReceived }} <span v-bind:class="{ 'badge-success': isConnected, 'badge-danger': !isConnected }" class="badge">{{ statusMessage }}</span></p>
+		<p class="nav navbar-text">Last contact: {{ lastReceived }} <span v-bind:class="{ 'badge-success': isConnected, 'badge-danger': !isConnected }" class="badge">{{ statusMessage }}</span></p>
 		
 	</div>
 </nav>
