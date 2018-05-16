@@ -6,6 +6,7 @@ import datetime
 import math
 import json
 import serial
+import datetime
 
 # https://pypi.python.org/pypi/paho-mqtt/1.1
 import paho.mqtt.client as mqtt
@@ -23,8 +24,9 @@ TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
 CALIBRATION_TOPIC = 'calibration'
 PACKET_SIZE = 128 # packet size in bytes.
+
 BAUD = 9600
-PORT = '/dev/ttyS0'
+SERIAL_PORT = '/dev/ttyS0'
 
 LAST_LATITUDE = 0
 LAST_LONGITUDE = 0
@@ -88,13 +90,18 @@ def on_control(client, userdata, message):
 
 
 # Function called when data is received from the XBee radio.
-def on_telemetry(data):
+def on_telemetry(client, data):
 	# get these values from the packet
 	altitude = data['altitude']
 	heading = data['heading']
 	groundspeed = data['groundspeed']
 	temperature = 0
 	power = 0
+	timestamp = data['timestamp']
+	# This is so fking stupid. 
+	# Python has .isoformat(), but has no native way of converting an iso back to dt.
+	# Turns out they're adding it in Python 3.7... but until then... ugh
+	created_dt = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%f')
 	# also get the timestamp.
 
 	# Perform dead reckoning and get the position we're at.
@@ -122,7 +129,7 @@ def on_telemetry(data):
 
 # Main entry point for the application.
 def main():
-	ser = serial.Serial(PORT, BAUD)
+	ser = serial.Serial(SERIAL_PORT, BAUD)
 
 	print("Initalizing communications relay...")
 	client = mqtt.Client()
@@ -140,7 +147,7 @@ def main():
 			# we don't need anything in the thread loop.
 			raw_data = ser.read(PACKET_SIZE)
 			jsdata = json.loads(raw_data)
-			on_telemetry(jsdata)
+			on_telemetry(client, jsdata)
 
 		except KeyboardInterrupt:
 			break
@@ -150,8 +157,7 @@ def main():
 	client.loop_stop()
 
 	# Kill XBee connection.
-	xbee.halt()
-	serial_port.close()
+	ser.close()
 
 
 if __name__ == "__main__":
