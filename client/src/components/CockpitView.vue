@@ -97,7 +97,6 @@
     .status {
         grid-area: status;
         background-color: #333;
-        height: 50px;
     }
 
     .control {
@@ -128,17 +127,5 @@
 
     .sensor6 {
         grid-area: sensor6;
-    }
-
-    .card {
-        background-color: slategray;
-    }
-
-    .card-inactive {
-        background-color: slategray;
-    }
-
-    .card-active {
-        background-color: gold;
     }
 </style>
