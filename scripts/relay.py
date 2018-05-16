@@ -15,16 +15,16 @@ import paho.mqtt.client as mqtt
 
 # The XBee library may be overkill. We may be able to use just the standard pySerial library.
 # https://stackoverflow.com/questions/13436471/how-can-i-send-strings-of-data-to-an-xbee-with-a-python-library
-from xbee import XBee
+#from xbee import XBee
 
 HOSTNAME = "broker.mqttdashboard.com"
 PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
 CALIBRATION_TOPIC = 'calibration'
-
-BAUD_RATE = 9600
-SERIAL_ADDR = '/dev/ttyUSB0'
+PACKET_SIZE = 128 # packet size in bytes.
+BAUD = 9600
+PORT = '/dev/ttyS0'
 
 LAST_LATITUDE = 0
 LAST_LONGITUDE = 0
@@ -90,9 +90,12 @@ def on_control(client, userdata, message):
 # Function called when data is received from the XBee radio.
 def on_telemetry(data):
 	# get these values from the packet
-	altitude = 0
-	heading = 0
-	groundspeed = 3
+	altitude = data['altitude']
+	heading = data['heading']
+	groundspeed = data['groundspeed']
+	temperature = 0
+	power = 0
+	# also get the timestamp.
 
 	# Perform dead reckoning and get the position we're at.
 	now = datetime.datetime.now()
@@ -110,10 +113,8 @@ def on_telemetry(data):
 	telemetry['speed'] = groundspeed
 	telemetry['altitude'] = altitude
 	telemetry['eventCode'] = eventCode
-	
-	# need blocking functions to get these values. External sensor readings.
-	telemetry['temperature'] = 0
-	telemetry['power'] = 0
+	telemetry['temperature'] = temperature
+	telemetry['power'] = power
 	
 	# Publish the telemetry packet
 	client.publish(TELEMETRY_TOPIC, json.dumps(telemetry), 0, True)
@@ -121,6 +122,8 @@ def on_telemetry(data):
 
 # Main entry point for the application.
 def main():
+	ser = serial.Serial(PORT, BAUD)
+
 	print("Initalizing communications relay...")
 	client = mqtt.Client()
 	client.on_connect = on_connect
@@ -135,8 +138,10 @@ def main():
 		try:
 			# since we're using asynchronous callbacks for both mqtt and xbee,
 			# we don't need anything in the thread loop.
-			
-			time.sleep(0.001)
+			raw_data = ser.read(PACKET_SIZE)
+			jsdata = json.loads(raw_data)
+			on_telemetry(jsdata)
+
 		except KeyboardInterrupt:
 			break
 
