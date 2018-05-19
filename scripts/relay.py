@@ -23,7 +23,7 @@ PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
 CALIBRATION_TOPIC = 'calibration'
-TELEMETRY_PACKET_SIZE = 80 # packet size in bytes.
+TELEMETRY_PACKET_SIZE = 128 # packet size in bytes.
 CONTROL_PACKET_SIZE = 14
 
 
@@ -95,8 +95,10 @@ def on_telemetry(client, raw_data):
 	altitude = data['alt']
 	heading = data['hdg']
 	groundspeed = data['gspd']
-	temperature = 0
-	power = 0
+	voltage = data['vol']
+	current = data['cur']
+	temperature = data['temp']
+	humidity = data['hum']
 	timestamp = data['ts']
 	eventCode = data['e']
 	print('Received data created at:', timestamp)
@@ -121,10 +123,12 @@ def on_telemetry(client, raw_data):
 	telemetry['longitude'] = lng
 	telemetry['heading'] = heading
 	telemetry['speed'] = groundspeed
+	telemetry['voltage'] = voltage
+	telemetry['current'] = current
 	telemetry['altitude'] = altitude
 	telemetry['eventCode'] = eventCode
 	telemetry['temperature'] = temperature
-	telemetry['power'] = power
+	telemetry['humidity'] = humidity
 	
 	# Publish the telemetry packet
 	client.publish(TELEMETRY_TOPIC, json.dumps(telemetry), 0, True)
@@ -138,8 +142,10 @@ def read_json(ser):
 	# While we need to, read a byte.
 	while not is_json:
 		byte = ser.read()
+		print(byte)
 		if (byte.decode('utf-8') == '}'):
 			raw_packet = ser.read(size=TELEMETRY_PACKET_SIZE)
+			print(raw_packet)
 			is_json = True
 	return raw_packet
 
@@ -167,14 +173,15 @@ def main():
 			# we don't need anything in the thread loop.
 			try:
 				if COMMAND:
-					ser.write(COMMAND.encode('latin-1'))
+					written = ser.write(COMMAND.encode('latin-1'))
 					COMMAND = None
+					print('Wrote packet size %s' % written)
 
 				#if (ser.in_waiting >= TELEMETRY_PACKET_SIZE):
 				#raw_data = ser.read(size=TELEMETRY_PACKET_SIZE)
+				#print(ser.read_all())
 				raw_data = read_json(ser)
-				#print(raw_data)
-				on_telemetry(client, raw_data)
+				#on_telemetry(client, raw_data)
 				
 			except ValueError:
 				print('ValueError')
