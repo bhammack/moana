@@ -36,6 +36,7 @@
 			var vm = this;
 			this.$mqtt.on('connect', function() {
 				vm.$mqtt.subscribe('telemetry');
+				vm.$mqtt.subscribe('calibration');
 				vm.onConnect();
 			});
 			this.$mqtt.on('reconnect', function() {

@@ -14,7 +14,7 @@
         <div class="sensor-grid-right">
             <div class="sensor sensor4"><thermometer></thermometer></div>
             <div class="sensor sensor5"><power></power></div>
-            <div class="sensor sensor6"><lux></lux></div>
+            <div class="sensor sensor6"></div>
         </div>
     </div>
 </template>
@@ -28,7 +28,7 @@
     import Compass from './Compass';
     import MapVue from './MapVue';
     import Speedometer from './Speedometer';
-    import Lux from './Lux';
+    // import Lux from './Lux';
 
     export default {
         components: {
@@ -40,7 +40,7 @@
             AnnunciatorPanel,
             ControlPanel,
             Speedometer,
-            Lux
+            // Lux
         }
     }
 </script>
