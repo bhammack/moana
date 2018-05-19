@@ -23,7 +23,7 @@ PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
 CALIBRATION_TOPIC = 'calibration'
-PACKET_SIZE = 128 # packet size in bytes.
+PACKET_SIZE = 80 # packet size in bytes.
 
 BAUD = 9600
 SERIAL_PORT = '/dev/ttyS0'
@@ -31,6 +31,8 @@ SERIAL_PORT = '/dev/ttyS0'
 LAST_LATITUDE = 0
 LAST_LONGITUDE = 0
 LAST_TIMESTAMP = datetime.datetime.now()
+
+COMMAND = ''
 
 
 #serial_port = serial.Serial(SERIAL_ADDR, BAUD_RATE);
@@ -74,7 +76,7 @@ def on_disconnect(client, userdata, rc):
 # Function called when the mqtt client receives calibration on the position channel.
 def on_calibration(client, userdata, message):
 	# Save off the newest true position for dead reckoning.
-	payload = json.loads(str(message.payload))
+	payload = json.loads(message.payload.decode('utf-8'))
 	print(message.topic, payload)
 	update_position(payload['latitude'], payload['longitude'], datetime.datetime.now())
 	print('Calibrating dead reckoning. Current position is %s, %s' % (LAST_LATITUDE, LAST_LONGITUDE))
@@ -82,22 +84,22 @@ def on_calibration(client, userdata, message):
 
 # Function called when the mqtt client receives commands on the control channel.
 def on_control(client, userdata, message):
-	payload = str(message.payload)
-	print(message.topic, payload)
-	# send the data to an xbee
-	# http://python-xbee.readthedocs.io/en/latest/#sending-data-to-an-xbee-device
-	#xbee.send("at", frame='A' command='MY' parameter=None)
-
+	payload = json.loads(message.payload.decode('utf-8'))
+	global COMMAND
+	COMMAND = payload['command']
+	print('Received command signal: ', COMMAND)
 
 # Function called when data is received from the XBee radio.
-def on_telemetry(client, data):
+def on_telemetry(client, raw_data):
+	data = json.loads(raw_data.decode('utf-8'))
 	# get these values from the packet
-	altitude = data['altitude']
-	heading = data['heading']
-	groundspeed = data['groundspeed']
+	print(data)
+	altitude = data['alt']
+	heading = data['hdg']
+	groundspeed = data['gspd']
 	temperature = 0
 	power = 0
-	timestamp = data['timestamp']
+	timestamp = data['ts']
 	# This is so fking stupid. 
 	# Python has .isoformat(), but has no native way of converting an iso back to dt.
 	# Turns out they're adding it in Python 3.7... but until then... ugh
@@ -129,6 +131,8 @@ def on_telemetry(client, data):
 
 # Main entry point for the application.
 def main():
+
+	global COMMAND
 	ser = serial.Serial(SERIAL_PORT, BAUD)
 
 	print("Initalizing communications relay...")
@@ -141,13 +145,23 @@ def main():
 
 	client.loop_start()
 	#client.loop_forever()
+	# https://robotics.stackexchange.com/questions/11897/how-to-read-and-write-data-with-pyserial-at-same-time
 	while True:
 		try:
 			# since we're using asynchronous callbacks for both mqtt and xbee,
 			# we don't need anything in the thread loop.
-			raw_data = ser.read(PACKET_SIZE)
-			jsdata = json.loads(raw_data)
-			on_telemetry(client, jsdata)
+			try:
+				if COMMAND:
+					print(COMMAND)
+					ser.write(COMMAND)
+					COMMAND = None
+
+				if (ser.in_waiting >= PACKET_SIZE):
+					raw_data = ser.read(size=PACKET_SIZE)
+					on_telemetry(client, raw_data)
+				
+			except ValueError:
+				ser.flushInput()
 
 		except KeyboardInterrupt:
 			break
