@@ -6,10 +6,16 @@
 
 # actually, the pixhawk uses these...
 # http://mavlink.org/messages/ardupilotmega
+
+# STABILIZE mode appears to have supersceded MANUAL mode.
+
 import datetime
 import json
 import serial
 from dronekit import connect, VehicleMode
+
+# optional for temp
+import Adafruit_DHT
 
 USB_BAUD = 115200 # oddly bounded by intmax...?
 USB_PORT = '/dev/ttyACM0' # this is actually a usb interface
@@ -18,7 +24,7 @@ SERIAL_PORT = '/dev/ttyS0'
 SERIAL_BAUD = 9600
 
 DECIMAL_PLACES = 2
-TELEMETRY_PACKET_SIZE = 80
+TELEMETRY_PACKET_SIZE = 128
 CONTROL_PACKET_SIZE = 14
 
 # Function called when xbee unit receives data. This will always be a control command.
@@ -41,22 +47,37 @@ def on_control(raw_data, vehicle):
 
 def unlock_propellers(vehicle):
 	print('Unlocking propellers...')
-
+	# Arm the vehicle
+	vehicle.armed = True
 
 # Function called to issue the motor lock to the autopilot.
 def lock_propellers(vehicle):
 	print('Locking propellers...')
+	# Disarm the vehicle.
+	vehicle.armed = False
 
 
 # Function called to issue the emergency land command / motor lock to the autopilot.
 def emergency_land(vehicle):
 	print('Initiating emergency land...')
+	# Land the vehicle. Steal back control.
+	vehicle.mode = VehicleMode("LAND")
+
+
+def begin_mission(vehicle):
+	vehicle.mode = VehicleMode("STABILIZE")
+	vehicle.armed = True
 
 
 # Function called to release the payload. Is this necessary?
 def release_payload(vehicle):
 	print('Releasing payload...')
 
+def read_am2302():
+	GPIOPIN = 4
+	humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.AM2302, GPIOPIN)
+	temperature = temperature * 1.8 + 32 # convert c to f.
+	return (humidity, temperature)
 
 # Main entry point of the application.
 def main():
@@ -75,12 +96,18 @@ def main():
 			t['gspd'] = round(vehicle.groundspeed, DECIMAL_PLACES)
 			t['alt'] = round(vehicle.location.global_frame.alt, DECIMAL_PLACES)
 			t['ts'] = datetime.datetime.utcnow().isoformat()
+			t['vol'] = vehicle.battery.voltage # millivolts
+			t['cur'] = vehicle.battery.current # 10 * milliamperes
+			humidity, temperature = read_am2302()
+			t['temp'] = round(temperature, DECIMAL_PLACES)
+			t['hum'] = round(humidity, DECIMAL_PLACES)
 			t['e'] = 0
 
 			telemetry = json.dumps(t, separators=(',', ':'))
 			tpacket = telemetry.ljust(TELEMETRY_PACKET_SIZE).encode('latin-1')
-			ser.write(tpacket)
-			print(telemetry)
+			written = ser.write(tpacket)
+			print('Wrote packet size %s' % written)
+			#print(telemetry)
 
 			if (ser.in_waiting >= CONTROL_PACKET_SIZE):
 				raw_data = ser.read(size=CONTROL_PACKET_SIZE)
