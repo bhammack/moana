@@ -1,5 +1,5 @@
 <template>
-    <radial-gauge v-model="power" v-bind:options="gaugeOptions"></radial-gauge>
+    <radial-gauge v-model="voltage" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
@@ -7,12 +7,12 @@
         mqtt: {
             'telemetry': function(val) {
                 var telemetry = JSON.parse(val.toString());
-                this.power = telemetry.power;
+                this.voltage = telemetry.voltage;
             }
         },
         data: function() {
             return {
-                power: 0,
+                voltage: 0,
                 gaugeOptions: {
                     title: 'Power',
                     colorTitle: '#eee',
