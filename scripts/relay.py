@@ -6,6 +6,7 @@ import datetime
 import math
 import json
 import serial
+import datetime
 
 # https://pypi.python.org/pypi/paho-mqtt/1.1
 import paho.mqtt.client as mqtt
@@ -15,25 +16,25 @@ import paho.mqtt.client as mqtt
 
 # The XBee library may be overkill. We may be able to use just the standard pySerial library.
 # https://stackoverflow.com/questions/13436471/how-can-i-send-strings-of-data-to-an-xbee-with-a-python-library
-from xbee import XBee
+#from xbee import XBee
 
 HOSTNAME = "broker.mqttdashboard.com"
 PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
 CALIBRATION_TOPIC = 'calibration'
+TELEMETRY_PACKET_SIZE = 80 # packet size in bytes.
+CONTROL_PACKET_SIZE = 14
 
-BAUD_RATE = 9600
-SERIAL_ADDR = '/dev/ttyUSB0'
+
+SERIAL_BAUD = 9600
+SERIAL_PORT = '/dev/ttyS0'
 
 LAST_LATITUDE = 0
 LAST_LONGITUDE = 0
 LAST_TIMESTAMP = datetime.datetime.now()
 
-
-#serial_port = serial.Serial(SERIAL_ADDR, BAUD_RATE);
-#xbee = XBee(serial_port, callback=on_telemetry)
-
+COMMAND = ''
 
 # Calculate the next latitude and longitude using a given latlng, heading angle, and distance (in meters).
 def next_position(lat, lng, heading, distance):
@@ -66,33 +67,44 @@ def on_connect(client, userdata, flags, rc):
 
 # Function called when the mqtt client disconnects from the web server.
 def on_disconnect(client, userdata, rc):
-	print("Disconnected from broker with rc: %s" % rc)
+	print("Disconnected from " + HOSTNAME + ":" + str(PORT))
 
 
 # Function called when the mqtt client receives calibration on the position channel.
 def on_calibration(client, userdata, message):
 	# Save off the newest true position for dead reckoning.
-	payload = json.loads(str(message.payload))
-	print(message.topic, payload)
+	payload = json.loads(message.payload.decode('utf-8'))
 	update_position(payload['latitude'], payload['longitude'], datetime.datetime.now())
-	print('Calibrating dead reckoning. Current position is %s, %s' % (LAST_LATITUDE, LAST_LONGITUDE))
+	print('Setting new seed position: %s, %s' % (LAST_LATITUDE, LAST_LONGITUDE))
 
 
 # Function called when the mqtt client receives commands on the control channel.
 def on_control(client, userdata, message):
-	payload = str(message.payload)
-	print(message.topic, payload)
-	# send the data to an xbee
-	# http://python-xbee.readthedocs.io/en/latest/#sending-data-to-an-xbee-device
-	#xbee.send("at", frame='A' command='MY' parameter=None)
-
+	payload = json.loads(message.payload.decode('utf-8'))
+	# contruct a command packet. Smaller size than the control packet.
+	cmd = payload['command']
+	global COMMAND
+	COMMAND = json.dumps({'cmd': cmd}, separators=(',',':'))
+	print('Received command signal: ', cmd)
 
 # Function called when data is received from the XBee radio.
-def on_telemetry(data):
+def on_telemetry(client, raw_data):
+	data = json.loads(raw_data.decode('utf-8'))
 	# get these values from the packet
-	altitude = 0
-	heading = 0
-	groundspeed = 3
+	altitude = data['alt']
+	heading = data['hdg']
+	groundspeed = data['gspd']
+	temperature = 0
+	power = 0
+	timestamp = data['ts']
+	eventCode = data['e']
+	print('Received data created at:', timestamp)
+
+	# This is so fking stupid. 
+	# Python has .isoformat(), but has no native way of converting an iso back to dt.
+	# Turns out they're adding it in Python 3.7... but until then... ugh
+	created_dt = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%f')
+	# also get the timestamp.
 
 	# Perform dead reckoning and get the position we're at.
 	now = datetime.datetime.now()
@@ -110,10 +122,8 @@ def on_telemetry(data):
 	telemetry['speed'] = groundspeed
 	telemetry['altitude'] = altitude
 	telemetry['eventCode'] = eventCode
-	
-	# need blocking functions to get these values. External sensor readings.
-	telemetry['temperature'] = 0
-	telemetry['power'] = 0
+	telemetry['temperature'] = temperature
+	telemetry['power'] = power
 	
 	# Publish the telemetry packet
 	client.publish(TELEMETRY_TOPIC, json.dumps(telemetry), 0, True)
@@ -121,6 +131,10 @@ def on_telemetry(data):
 
 # Main entry point for the application.
 def main():
+
+	global COMMAND
+	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
+
 	print("Initalizing communications relay...")
 	client = mqtt.Client()
 	client.on_connect = on_connect
@@ -131,12 +145,24 @@ def main():
 
 	client.loop_start()
 	#client.loop_forever()
+	# https://robotics.stackexchange.com/questions/11897/how-to-read-and-write-data-with-pyserial-at-same-time
 	while True:
 		try:
 			# since we're using asynchronous callbacks for both mqtt and xbee,
 			# we don't need anything in the thread loop.
-			
-			time.sleep(0.001)
+			try:
+				if COMMAND:
+					ser.write(COMMAND.encode('latin-1'))
+					COMMAND = None
+
+				if (ser.in_waiting >= TELEMETRY_PACKET_SIZE):
+					raw_data = ser.read(size=TELEMETRY_PACKET_SIZE)
+					on_telemetry(client, raw_data)
+				
+			except ValueError:
+				print('ValueError')
+				ser.flushInput()
+
 		except KeyboardInterrupt:
 			break
 
@@ -145,8 +171,7 @@ def main():
 	client.loop_stop()
 
 	# Kill XBee connection.
-	xbee.halt()
-	serial_port.close()
+	ser.close()
 
 
 if __name__ == "__main__":
