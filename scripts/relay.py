@@ -23,9 +23,11 @@ PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
 CALIBRATION_TOPIC = 'calibration'
-PACKET_SIZE = 80 # packet size in bytes.
+TELEMETRY_PACKET_SIZE = 80 # packet size in bytes.
+CONTROL_PACKET_SIZE = 14
 
-BAUD = 9600
+
+SERIAL_BAUD = 9600
 SERIAL_PORT = '/dev/ttyS0'
 
 LAST_LATITUDE = 0
@@ -33,11 +35,6 @@ LAST_LONGITUDE = 0
 LAST_TIMESTAMP = datetime.datetime.now()
 
 COMMAND = ''
-
-
-#serial_port = serial.Serial(SERIAL_ADDR, BAUD_RATE);
-#xbee = XBee(serial_port, callback=on_telemetry)
-
 
 # Calculate the next latitude and longitude using a given latlng, heading angle, and distance (in meters).
 def next_position(lat, lng, heading, distance):
@@ -70,36 +67,39 @@ def on_connect(client, userdata, flags, rc):
 
 # Function called when the mqtt client disconnects from the web server.
 def on_disconnect(client, userdata, rc):
-	print("Disconnected from broker with rc: %s" % rc)
+	print("Disconnected from " + HOSTNAME + ":" + str(PORT))
 
 
 # Function called when the mqtt client receives calibration on the position channel.
 def on_calibration(client, userdata, message):
 	# Save off the newest true position for dead reckoning.
 	payload = json.loads(message.payload.decode('utf-8'))
-	print(message.topic, payload)
 	update_position(payload['latitude'], payload['longitude'], datetime.datetime.now())
-	print('Calibrating dead reckoning. Current position is %s, %s' % (LAST_LATITUDE, LAST_LONGITUDE))
+	print('Setting new seed position: %s, %s' % (LAST_LATITUDE, LAST_LONGITUDE))
 
 
 # Function called when the mqtt client receives commands on the control channel.
 def on_control(client, userdata, message):
 	payload = json.loads(message.payload.decode('utf-8'))
+	# contruct a command packet. Smaller size than the control packet.
+	cmd = payload['command']
 	global COMMAND
-	COMMAND = payload['command']
-	print('Received command signal: ', COMMAND)
+	COMMAND = json.dumps({'cmd': cmd}, separators=(',',':'))
+	print('Received command signal: ', cmd)
 
 # Function called when data is received from the XBee radio.
 def on_telemetry(client, raw_data):
 	data = json.loads(raw_data.decode('utf-8'))
 	# get these values from the packet
-	print(data)
 	altitude = data['alt']
 	heading = data['hdg']
 	groundspeed = data['gspd']
 	temperature = 0
 	power = 0
 	timestamp = data['ts']
+	eventCode = data['e']
+	print('Received data created at:', timestamp)
+
 	# This is so fking stupid. 
 	# Python has .isoformat(), but has no native way of converting an iso back to dt.
 	# Turns out they're adding it in Python 3.7... but until then... ugh
@@ -133,7 +133,7 @@ def on_telemetry(client, raw_data):
 def main():
 
 	global COMMAND
-	ser = serial.Serial(SERIAL_PORT, BAUD)
+	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
 
 	print("Initalizing communications relay...")
 	client = mqtt.Client()
@@ -152,15 +152,15 @@ def main():
 			# we don't need anything in the thread loop.
 			try:
 				if COMMAND:
-					print(COMMAND)
-					ser.write(COMMAND)
+					ser.write(COMMAND.encode('latin-1'))
 					COMMAND = None
 
-				if (ser.in_waiting >= PACKET_SIZE):
-					raw_data = ser.read(size=PACKET_SIZE)
+				if (ser.in_waiting >= TELEMETRY_PACKET_SIZE):
+					raw_data = ser.read(size=TELEMETRY_PACKET_SIZE)
 					on_telemetry(client, raw_data)
 				
 			except ValueError:
+				print('ValueError')
 				ser.flushInput()
 
 		except KeyboardInterrupt:
