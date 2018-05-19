@@ -6,8 +6,9 @@ var TelemetrySchema = new mongoose.Schema({
     dateCreated: Date,          // datetime the vehicle created the packet.
     dateReceived: { type: Date, default: Date.now }, // datetime the packet was received and saved.
     temperature: Number,        // degrees f
+    humidity: Number,           // percentage
     altitude: Number,           // feet
-    power: Number,              // [0-100] percentage as integer
+    voltage: Number,            // in millivolts
     heading: Number,            // magnetic heading
     speed: Number,              // ground speed
     latitude: Number,           // relative or absolute

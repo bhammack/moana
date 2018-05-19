@@ -1,5 +1,5 @@
 <template>
-    <radial-gauge v-model="temperature" v-bind:options="gaugeOptions"></radial-gauge>
+    <radial-gauge v-model="humidity" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
@@ -7,16 +7,15 @@
         mqtt: {
             'telemetry': function(val) {
                 var telemetry = JSON.parse(val.toString());
-                //var fahrenheit = telemetry.temperature * 1.8 + 32;
-                this.temperature = telemetry.temperature;
+                this.humidity = telemetry.humidity;
             }
         },
         data: function() {
             return {
-                temperature: 0,
+                humidity: 0,
                 gaugeOptions: {
-                    title: 'Temperature',
-                    units: '°F',
+                    title: 'Humidity',
+                    units: '%',
                     minValue: 0,
                     maxValue: 100,
                     height: 290,
@@ -37,18 +36,18 @@
                     highlights: [
                         {
                             from: 0,
-                            to: 32,
-                            color: 'blue'
+                            to: 35,
+                            color: 'brown'
                         },
                         {
-                            from: 32,
-                            to: 70,
+                            from: 35,
+                            to: 65,
                             color: 'grey'
                         },
                         {
-                            from: 70,
+                            from: 65,
                             to: 100,
-                            color: 'green'
+                            color: 'navy'
                         }
                     ],
                     animationRule: 'linear',

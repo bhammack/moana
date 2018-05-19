@@ -13,8 +13,8 @@
         </div>
         <div class="sensor-grid-right">
             <div class="sensor sensor4"><thermometer></thermometer></div>
-            <div class="sensor sensor5"><power></power></div>
-            <div class="sensor sensor6"></div>
+            <div class="sensor sensor5"><voltmeter></voltmeter></div>
+            <div class="sensor sensor6"><humidity></humidity></div>
         </div>
     </div>
 </template>
@@ -24,10 +24,11 @@
     import Thermometer from './Thermometer';
     import AnnunciatorPanel from './AnnunciatorPanel';
     import ControlPanel from './ControlPanel';
-    import Power from './Power';
+    import Voltmeter from './Voltmeter';
     import Compass from './Compass';
     import MapVue from './MapVue';
     import Speedometer from './Speedometer';
+    import Humidity from './Humidity';
     // import Lux from './Lux';
 
     export default {
@@ -35,11 +36,12 @@
             MapVue,
             Altimeter,
             Thermometer,
-            Power,
+            Voltmeter,
             Compass,
             AnnunciatorPanel,
             ControlPanel,
             Speedometer,
+            Humidity
             // Lux
         }
     }
