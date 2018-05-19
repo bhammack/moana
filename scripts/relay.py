@@ -142,10 +142,10 @@ def read_json(ser):
 	# While we need to, read a byte.
 	while not is_json:
 		byte = ser.read()
-		print(byte)
+		#print(byte)
 		if (byte.decode('utf-8') == '}'):
 			raw_packet = ser.read(size=TELEMETRY_PACKET_SIZE)
-			print(raw_packet)
+			#print(raw_packet)
 			is_json = True
 	return raw_packet
 
@@ -181,7 +181,7 @@ def main():
 				#raw_data = ser.read(size=TELEMETRY_PACKET_SIZE)
 				#print(ser.read_all())
 				raw_data = read_json(ser)
-				#on_telemetry(client, raw_data)
+				on_telemetry(client, raw_data)
 				
 			except ValueError:
 				print('ValueError')
