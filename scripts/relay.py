@@ -87,6 +87,7 @@ def on_control(client, userdata, message):
 	COMMAND = json.dumps({'cmd': cmd}, separators=(',',':'))
 	print('Received command signal: ', cmd)
 
+
 # Function called when data is received from the XBee radio.
 def on_telemetry(client, raw_data):
 	data = json.loads(raw_data.decode('utf-8'))
@@ -129,6 +130,20 @@ def on_telemetry(client, raw_data):
 	client.publish(TELEMETRY_TOPIC, json.dumps(telemetry), 0, True)
 
 
+# Method to cause the serial port to read until it has a full json object.
+def read_json(ser):
+	is_json = False
+	raw_packet = None
+
+	# While we need to, read a byte.
+	while not is_json:
+		byte = ser.read()
+		if (byte.decode('utf-8') == '}'):
+			raw_packet = ser.read(size=TELEMETRY_PACKET_SIZE)
+			is_json = True
+	return raw_packet
+
+
 # Main entry point for the application.
 def main():
 
@@ -155,9 +170,11 @@ def main():
 					ser.write(COMMAND.encode('latin-1'))
 					COMMAND = None
 
-				if (ser.in_waiting >= TELEMETRY_PACKET_SIZE):
-					raw_data = ser.read(size=TELEMETRY_PACKET_SIZE)
-					on_telemetry(client, raw_data)
+				#if (ser.in_waiting >= TELEMETRY_PACKET_SIZE):
+				#raw_data = ser.read(size=TELEMETRY_PACKET_SIZE)
+				raw_data = read_json(ser)
+				#print(raw_data)
+				on_telemetry(client, raw_data)
 				
 			except ValueError:
 				print('ValueError')
