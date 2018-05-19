@@ -1,7 +1,7 @@
 <template>
     <div id="about">
         <h1>About</h1>
-        <h6 v-for="name in names">{{name}}</h6>
+        <!-- <h6 v-for="name in names">{{name}}</h6> -->
 
 
 
