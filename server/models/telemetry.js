@@ -8,7 +8,8 @@ var TelemetrySchema = new mongoose.Schema({
     temperature: Number,        // degrees f
     humidity: Number,           // percentage
     altitude: Number,           // feet
-    voltage: Number,            // in millivolts
+    voltage: Number,            // in millivolts,
+    current: Number,            //
     heading: Number,            // magnetic heading
     speed: Number,              // ground speed
     latitude: Number,           // relative or absolute
