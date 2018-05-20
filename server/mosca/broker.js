@@ -53,6 +53,9 @@ broker.on('published', (packet, client) => {
             telemetry.temperature = obj.temperature;
             telemetry.latitude = obj.latitude;
             telemetry.longitude = obj.longitude;
+            telemetry.speed = obj.speed;
+            telemetry.current = obj.current;
+            telemetry.humidity = obj.humidity;
             telemetry.eventCode = obj.eventCode;
 
             telemetry.save((err) => {

@@ -10,8 +10,8 @@
                         <th>Longitude</th>
                         <th>Altitude</th>
                         <th>Temperature</th>
-                        <th>Power</th>
-                        <th>Event Code</th>
+                        <th>Voltage</th>
+                        <th>Speed</th>
                     </tr>
                 </thead>
             </table>
@@ -38,8 +38,8 @@ export default {
                 { data: 'longitude' },
                 { data: 'altitude' },
                 { data: 'temperature' },
-                { data: 'power' },
-                { data: 'eventCode' }
+                { data: 'voltage' },
+                { data: 'speed' }
             ]
         })
         .on('error.dt', function(e, settings, techNote, message) {
