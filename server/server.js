@@ -12,7 +12,7 @@ const apiRouter     = require('./routes/api');                // Get our API rou
 
 // Establish Mongodb connector ============================================================================================================
 const db_host = process.env.DB_HOST || 'mongodb://localhost:27017';
-const port = process.env.PORT || '80';
+const port = process.env.PORT || '3000';
 
 console.log('"' + ra2.quote() + '"');
 mongoose.connect(db_host, {}).then(() => { 

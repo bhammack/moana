@@ -16,14 +16,14 @@ import VueMqtt from 'vue-mqtt';
 // Dynamically get the current server's hosting information to connect via websockets.
 const mqtt_protocol = 'ws';
 const mqtt_hostname = window.location.hostname;
-const mqtt_port = window.location.port || '80';
+const mqtt_port = window.location.port || '3000';
 var mqtt_host;
 
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV == 'development') {
   mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
 } else {
-  mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port;
+  mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port + '/mqtt';
 }
 
 const mqtt_options = {
