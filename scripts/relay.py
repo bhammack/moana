@@ -18,7 +18,9 @@ import paho.mqtt.client as mqtt
 # https://stackoverflow.com/questions/13436471/how-can-i-send-strings-of-data-to-an-xbee-with-a-python-library
 #from xbee import XBee
 
-HOSTNAME = "broker.mqttdashboard.com"
+#HOSTNAME = "broker.mqttdashboard.com"
+HOSTNAME = 'moana.duckdns.org'
+#HOSTNAME = '192.168.1.19'
 PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
 CONTROL_TOPIC = 'control'
