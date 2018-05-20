@@ -16,7 +16,7 @@ import VueMqtt from 'vue-mqtt';
 // Dynamically get the current server's hosting information to connect via websockets.
 const mqtt_protocol = 'ws';
 const mqtt_hostname = window.location.hostname;
-const mqtt_port = window.location.port;
+const mqtt_port = window.location.port || '80';
 var mqtt_host;
 
 console.log(process.env.NODE_ENV)
