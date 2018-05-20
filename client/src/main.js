@@ -23,7 +23,11 @@ console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV == 'development') {
   mqtt_host = 'ws://broker.mqttdashboard.com:8000/mqtt';
 } else {
-  mqtt_host = mqtt_protocol + '://' + mqtt_hostname + ':' + mqtt_port + '/mqtt';
+  mqtt_host = mqtt_protocol + '://' + mqtt_hostname;
+  if (window.location.port != '') {
+    mqtt_host += ':' + window.location.port;
+  }
+  mqtt_host += '/mqtt';
 }
 
 const mqtt_options = {
