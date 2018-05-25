@@ -103,6 +103,7 @@ def on_telemetry(client, raw_data):
 	humidity = data['hum']
 	timestamp = data['ts']
 	eventCode = data['e']
+	lux = data['lux']
 	print('Received data created at:', timestamp)
 
 	# This is so fking stupid. 
@@ -131,7 +132,8 @@ def on_telemetry(client, raw_data):
 	telemetry['eventCode'] = eventCode
 	telemetry['temperature'] = temperature
 	telemetry['humidity'] = humidity
-	
+	telemetry['lux'] = lux
+
 	# Publish the telemetry packet
 	client.publish(TELEMETRY_TOPIC, json.dumps(telemetry), 0, True)
 
