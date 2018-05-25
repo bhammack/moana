@@ -16,6 +16,7 @@ from dronekit import connect, VehicleMode
 
 # optional for temp
 import Adafruit_DHT
+import tsl2591
 
 USB_BAUD = 115200 # oddly bounded by intmax...?
 USB_PORT = '/dev/ttyACM0' # this is actually a usb interface
@@ -79,6 +80,12 @@ def read_am2302():
 	temperature = temperature * 1.8 + 32 # convert c to f.
 	return (humidity, temperature)
 
+def read_tsl2591():
+	tsl = tsl2591.Tsl2591()
+	full, ir = tsl.get_full_luminosity()  # read raw values (full spectrum and ir spectrum)
+	lux = tsl.calculate_lux(full, ir)  # convert raw values to lux
+	return lux
+
 # Main entry point of the application.
 def main():
 	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
@@ -100,7 +107,9 @@ def main():
 			t['cur'] = vehicle.battery.current # 10 * milliamperes
 			humidity, temperature = read_am2302()
 			t['temp'] = round(temperature, DECIMAL_PLACES)
-			t['hum'] = round(humidity, DECIMAL_PLACES)
+			#t['hum'] = round(humidity, DECIMAL_PLACES)
+			lux = read_tsl2591()
+			t['lux'] = int(lux)
 			t['e'] = 0
 
 			telemetry = json.dumps(t, separators=(',', ':'))
