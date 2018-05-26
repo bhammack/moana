@@ -1,19 +1,13 @@
 <template>
     <div id="about">
-        <h1>About</h1>
-<<<<<<< HEAD
-        <!-- <h6 v-for="name in names">{{name}}</h6> -->
-
-
-
-
-
-
-=======
+        <h3>About</h3>
         <div class="container">
             <div class="jumbotron">
                 <div class="row">
                     <div class="col-6">
+                        <h1>MOANA</h1>
+                        <small>Mobile Operational Assistance for Navigation Appropriations</small>
+                        
                     </div>
                     <div class="col-6">
                         <ul>
@@ -27,7 +21,6 @@
             </div>
             
         </div>
->>>>>>> bfc5bc80206287d1e63186f1f1e504b8bec85d10
     </div>
 </template>
 <script>

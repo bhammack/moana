@@ -96,7 +96,6 @@
             'lux': function(val) {
                 var lux = JSON.parse(val.toString());
                 this.lux = lux.luxThreshold;
-                console.log(lux.luxThreshold);
             }
         },
         data: function() {
@@ -116,6 +115,7 @@
                 axios.post('api/auth', { username: this.username, password: this.password}).then((res) => {
                     vm.password = '';
                     vm.controlsEnabled = true;
+                    $('#authModal').modal('hide');
                 }).catch((err) => {
 
                 });
@@ -150,14 +150,20 @@
                 this.$mqtt.publish('calibration', JSON.stringify({
                     latitude: vm.latitude,
                     longitude: vm.longitude
-                }), 2, true);
+                }), {
+                    qos: 2,
+                    retain: true
+                });
             },
             luxThreshold: function() {
                 var vm = this;
                 console.log('Setting lux threshold...');
                 this.$mqtt.publish('lux', JSON.stringify({
                     luxThreshold: vm.lux
-                }), 2, true);
+                }), {
+                    qos: 2,
+                    retain: true
+                });
             }
         },
         mounted: function() {
