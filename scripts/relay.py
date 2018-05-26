@@ -18,8 +18,8 @@ import paho.mqtt.client as mqtt
 # https://stackoverflow.com/questions/13436471/how-can-i-send-strings-of-data-to-an-xbee-with-a-python-library
 #from xbee import XBee
 
-#HOSTNAME = "broker.mqttdashboard.com"
-HOSTNAME = 'moana.duckdns.org'
+HOSTNAME = "broker.mqttdashboard.com"
+#HOSTNAME = 'moana.duckdns.org'
 #HOSTNAME = '192.168.1.19'
 PORT = 1883
 TELEMETRY_TOPIC = 'telemetry'
@@ -100,7 +100,8 @@ def on_telemetry(client, raw_data):
 	voltage = data['vol']
 	current = data['cur']
 	temperature = data['temp']
-	humidity = data['hum']
+	#humidity = data['hum']
+	humidity = 0
 	timestamp = data['ts']
 	eventCode = data['e']
 	lux = data['lux']
@@ -147,8 +148,9 @@ def read_json(ser):
 	while not is_json:
 		byte = ser.read()
 		#print(byte)
-		if (byte.decode('utf-8') == '}'):
-			raw_packet = ser.read(size=TELEMETRY_PACKET_SIZE)
+		if (byte.decode('utf-8') == '{'):
+			raw_packet = ser.read(size=TELEMETRY_PACKET_SIZE-1)
+			raw_packet = byte + raw_packet
 			#print(raw_packet)
 			is_json = True
 	return raw_packet
