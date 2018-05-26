@@ -14,7 +14,7 @@
         <div class="sensor-grid-right">
             <div class="sensor sensor4"><thermometer></thermometer></div>
             <div class="sensor sensor5"><voltmeter></voltmeter></div>
-            <div class="sensor sensor6"><humidity></humidity></div>
+            <div class="sensor sensor6"><lux></lux></div>
         </div>
     </div>
 </template>
@@ -28,8 +28,8 @@
     import Compass from './Compass';
     import MapVue from './MapVue';
     import Speedometer from './Speedometer';
-    import Humidity from './Humidity';
-    // import Lux from './Lux';
+    //import Humidity from './Humidity';
+    import Lux from './Lux';
 
     export default {
         components: {
@@ -41,8 +41,8 @@
             AnnunciatorPanel,
             ControlPanel,
             Speedometer,
-            Humidity
-            // Lux
+            //Humidity
+            Lux
         }
     }
 </script>
@@ -102,7 +102,7 @@
     }
 
     .control {
-        height: 50px;
+        /* height: 100px; */
         grid-area: control;
         background-color: #333;
     }

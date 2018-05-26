@@ -37,6 +37,7 @@
 			this.$mqtt.on('connect', function() {
 				vm.$mqtt.subscribe('telemetry');
 				vm.$mqtt.subscribe('calibration');
+				vm.$mqtt.subscribe('lux');
 				vm.onConnect();
 			});
 			this.$mqtt.on('reconnect', function() {
