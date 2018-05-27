@@ -11,11 +11,19 @@
         mqtt: {
             'telemetry': function(val) {
                 var telemetry = JSON.parse(val.toString());
+
+                this.heatDetected = (telemetry.lux > this.luxThreshold);
+                this.grounded = !(telemetry.altitude > 0);
                 // TODO: parse the status codes
+            },
+            'lux': function(val) {
+                var lux = JSON.parse(val.toString());
+                this.luxThreshold = lux.luxThreshold;
             }
         },
         data: function() {
             return {
+                luxThreshold: 0,
                 heatDetected: false,
                 propsLocked: false,
                 grounded: false,

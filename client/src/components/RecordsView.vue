@@ -1,7 +1,12 @@
 <template>
     <div id="records">
-        <h1>Records</h1>
+
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                <h3>Telemetry Records</h3>
+                </div>
+            </div>
             <table id="recordsTable" class="table table-striped">
                 <thead>
                     <tr>

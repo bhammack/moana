@@ -1,5 +1,5 @@
 <template>
-    <radial-gauge v-model="altitude" v-bind:options="gaugeOptions"></radial-gauge>
+    <radial-gauge v-model="lux" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
@@ -7,15 +7,15 @@
         mqtt: {
             'telemetry': function(val) {
                 var telemetry = JSON.parse(val.toString());
-                this.altitude = telemetry.altitude;
+                this.lux = telemetry.lux;
             }
         },
         data: function() {
             return {
-                altitude: 0,
+                lux: 0,
                 gaugeOptions: {
-                    title: 'Lux Rating',
-                    units: '???',
+                    title: 'Lux',
+                    units: 'lux',
                     minValue: 0,
                     maxValue: 100,
                     height: 290,
