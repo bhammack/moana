@@ -74,14 +74,13 @@ def begin_mission(vehicle):
 def release_payload(vehicle):
 	print('Releasing payload...')
 
-def read_am2302():
-	GPIOPIN = 4
+def read_am2302(GPIOPIN):
 	humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.AM2302, GPIOPIN)
 	temperature = temperature * 1.8 + 32 # convert c to f.
 	return (humidity, temperature)
 
-def read_tsl2591():
-	tsl = tsl2591.Tsl2591()
+def read_tsl2591(tsl):
+	#tsl = tsl2591.Tsl2591()
 	full, ir = tsl.get_full_luminosity()  # read raw values (full spectrum and ir spectrum)
 	lux = tsl.calculate_lux(full, ir)  # convert raw values to lux
 	return lux
@@ -90,7 +89,9 @@ def read_tsl2591():
 def main():
 	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
 	vehicle = connect(USB_PORT, baud=USB_BAUD, wait_ready=True)
-	
+	tsl = tsl2591.Tsl2591()
+	GPIOPIN = 4
+
 	while True:
 		try:
 			# enter what appears to be a non-blocking loop. A blocking mode seems available.
@@ -105,10 +106,10 @@ def main():
 			t['ts'] = datetime.datetime.utcnow().isoformat()
 			t['vol'] = vehicle.battery.voltage # millivolts
 			t['cur'] = vehicle.battery.current # 10 * milliamperes
-			humidity, temperature = read_am2302()
+			humidity, temperature = read_am2302(GPIOPIN)
 			t['temp'] = round(temperature, DECIMAL_PLACES)
 			#t['hum'] = round(humidity, DECIMAL_PLACES)
-			lux = read_tsl2591()
+			lux = read_tsl2591(tsl)
 			t['lux'] = int(lux)
 			t['e'] = 0
 
@@ -123,7 +124,12 @@ def main():
 				on_control(raw_data, vehicle)
 				
 		except KeyboardInterrupt:
+			print('KeyboardInterrupt - closing')
 			break
+
+		except IOError:
+			print('IOError - packet not sent')
+			
 	print('\nClosing serial connections...')
 	vehicle.close()
 	ser.close()
