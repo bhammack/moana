@@ -96,13 +96,13 @@ def on_telemetry(client, raw_data):
 	# get these values from the packet
 	altitude = data['alt']
 	heading = data['hdg']
-	groundspeed = data['gspd']
+	groundspeed = data['spd']
 	voltage = data['vol']
 	current = data['cur']
-	temperature = data['temp']
+	temperature = data['tmp']
 	#humidity = data['hum']
 	humidity = 0
-	timestamp = data['ts']
+	timestamp = data['dt']
 	eventCode = data['e']
 	lux = data['lux']
 	print('Received data created at:', timestamp)

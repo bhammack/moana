@@ -80,7 +80,6 @@ def read_am2302(GPIOPIN):
 	return (humidity, temperature)
 
 def read_tsl2591(tsl):
-	#tsl = tsl2591.Tsl2591()
 	full, ir = tsl.get_full_luminosity()  # read raw values (full spectrum and ir spectrum)
 	lux = tsl.calculate_lux(full, ir)  # convert raw values to lux
 	return lux
@@ -90,6 +89,7 @@ def main():
 	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
 	vehicle = connect(USB_PORT, baud=USB_BAUD, wait_ready=True)
 	tsl = tsl2591.Tsl2591()
+	tsl.set_gain(tsl2591.GAIN_HIGH)
 	GPIOPIN = 4
 
 	while True:
@@ -98,16 +98,15 @@ def main():
 			#msg = pixhawk.recv_match(blocking=False)
 			#if msg:
 				#handle_message(msg)
-
 			t = {}
 			t['hdg'] = round(vehicle.heading, DECIMAL_PLACES)
-			t['gspd'] = round(vehicle.groundspeed, DECIMAL_PLACES)
+			t['spd'] = round(vehicle.groundspeed, DECIMAL_PLACES)
 			t['alt'] = round(vehicle.location.global_frame.alt, DECIMAL_PLACES)
-			t['ts'] = datetime.datetime.utcnow().isoformat()
+			t['dt'] = datetime.datetime.utcnow().isoformat()
 			t['vol'] = vehicle.battery.voltage # millivolts
 			t['cur'] = vehicle.battery.current # 10 * milliamperes
 			humidity, temperature = read_am2302(GPIOPIN)
-			t['temp'] = round(temperature, DECIMAL_PLACES)
+			t['tmp'] = round(temperature, DECIMAL_PLACES)
 			#t['hum'] = round(humidity, DECIMAL_PLACES)
 			lux = read_tsl2591(tsl)
 			t['lux'] = int(lux)
