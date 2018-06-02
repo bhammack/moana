@@ -19,8 +19,8 @@ import Adafruit_DHT
 import tsl2591
 
 USB_BAUD = 115200 # oddly bounded by intmax...?
-#USB_PORT = '/dev/ttyACM0' # this is actually a usb interface
-USB_PORT = '/dev/ttyACM1' # this is actually a usb interface
+USB_PORT = '/dev/ttyACM0' # this is actually a usb interface
+#USB_PORT = '/dev/ttyACM1' # this is actually a usb interface
 
 SERIAL_PORT = '/dev/ttyS0'
 SERIAL_BAUD = 9600
@@ -90,7 +90,7 @@ def main():
 	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
 	vehicle = connect(USB_PORT, baud=USB_BAUD, wait_ready=True)
 	tsl = tsl2591.Tsl2591()
-	tsl.set_gain(tsl2591.GAIN_HIGH)
+	#tsl.set_gain(tsl2591.GAIN_HIGH)
 	GPIOPIN = 4
 
 	while True:
