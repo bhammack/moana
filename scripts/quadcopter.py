@@ -19,7 +19,8 @@ import Adafruit_DHT
 import tsl2591
 
 USB_BAUD = 115200 # oddly bounded by intmax...?
-USB_PORT = '/dev/ttyACM0' # this is actually a usb interface
+#USB_PORT = '/dev/ttyACM0' # this is actually a usb interface
+USB_PORT = '/dev/ttyACM1' # this is actually a usb interface
 
 SERIAL_PORT = '/dev/ttyS0'
 SERIAL_BAUD = 9600
