@@ -89,7 +89,7 @@ def read_tsl2591(tsl):
 def main():
 	ser = serial.Serial(SERIAL_PORT, SERIAL_BAUD)
 	vehicle = connect(USB_PORT, baud=USB_BAUD, wait_ready=True)
-	tsl = tsl2591.Tsl2591(gain=tsl2591.GAIN_HIGH)
+	tsl = tsl2591.Tsl2591()
 	#tsl.set_gain(tsl2591.GAIN_HIGH)
 	GPIOPIN = 4
 
