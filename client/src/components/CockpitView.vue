@@ -13,7 +13,7 @@
         </div>
         <div class="sensor-grid-right">
             <div class="sensor sensor4"><thermometer></thermometer></div>
-            <div class="sensor sensor5"><voltmeter></voltmeter></div>
+            <div class="sensor sensor5"><battery></battery></div>
             <div class="sensor sensor6"><lux></lux></div>
         </div>
     </div>
@@ -30,6 +30,8 @@
     import Speedometer from './Speedometer';
     //import Humidity from './Humidity';
     import Lux from './Lux';
+    import Battery from './Battery';
+
 
     export default {
         components: {
@@ -37,12 +39,13 @@
             Altimeter,
             Thermometer,
             Voltmeter,
-            Compass,
+            Compass, 
             AnnunciatorPanel,
             ControlPanel,
             Speedometer,
             //Humidity
-            Lux
+            Lux,
+            Battery
         }
     }
 </script>

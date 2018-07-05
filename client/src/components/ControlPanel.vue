@@ -19,7 +19,7 @@
                             <button type="button" :disabled="!controlsEnabled" v-on:click="emergencyLand" class="btn btn-danger btn-block"><i class="fa fa-arrow-circle-o-down"></i> Emergency Land</button>
                         </div>
                         <div class="col-6">
-                            <button type="button" :disabled="!controlsEnabled" v-on:click="releasePayload" class="btn btn-info btn-block"><i class="fa fa-medkit"></i> Release Payload</button>
+                            <button type="button" :disabled="!controlsEnabled" v-on:click="loadBattery" class="btn btn-info btn-block"><i class="fa fa-battery-full"></i> Load Full Battery</button>
                         </div>
                     </div>
                     
@@ -120,10 +120,10 @@
 
                 });
             },
-            releasePayload: function() {
-                console.log('Payload released...');
-                this.$mqtt.publish('control', JSON.stringify({
-                    command: 'DROP'
+            loadBattery: function() {
+                console.log('Loading battery...');
+                this.$mqtt.publish('power', JSON.stringify({
+                    command: 'RESET'
                 }));
             },
             lockProps: function() {
@@ -168,6 +168,7 @@
         },
         mounted: function() {
             var vm = this;
+            /*
             window.addEventListener('keyup', function(event) {
                 if (vm.controlsEnabled) {
                     if (event.keyCode == SPACE) {
@@ -177,6 +178,7 @@
                     }
                 }
             });
+            */
         }
     }
 </script>
