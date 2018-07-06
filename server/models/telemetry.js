@@ -8,8 +8,8 @@ var TelemetrySchema = new mongoose.Schema({
     temperature: Number,        // degrees f
     humidity: Number,           // percentage
     altitude: Number,           // feet
-    voltage: Number,            // in millivolts,
-    current: Number,            //
+    voltage: Number,            // in volts,
+    current: Number,            // in amps / 100??? avg readings are 0.04 - 0.11.
     heading: Number,            // magnetic heading
     speed: Number,              // ground speed
     latitude: Number,           // relative or absolute
