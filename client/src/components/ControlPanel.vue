@@ -2,13 +2,12 @@
      <div>
         <div id="controls" v-on:keyup.space="console.log('test');">
             <div class="row">
-                <div class="col-2">
-                    <button type="button" :disabled="controlsEnabled" class="btn btn-primary btn-block" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
-                </div>
-                <div class="col-6">
+                
+                <div class="col-7">
                     <div class="row">
                         <div class="col-6">
-                            <button type="button" :disabled="!controlsEnabled" v-on:click="lockProps" class="btn btn-warning btn-block"><i class="fa fa-ban"></i> Lock Propellers</button>
+                                                    <button type="button" :disabled="controlsEnabled" class="btn btn-primary btn-block" data-toggle="modal" data-target="#authModal"><i class="fa fa-unlock"></i> Enable Controls</button>
+
                         </div>
                         <div class="col-6">
                             <button type="button" :disabled="!controlsEnabled" v-on:click="unlockProps" class="btn btn-success btn-block"><i class="fa fa-ban"></i> Unlock Propellers</button>
@@ -18,14 +17,15 @@
                         <div class="col-6">
                             <button type="button" :disabled="!controlsEnabled" v-on:click="emergencyLand" class="btn btn-danger btn-block"><i class="fa fa-arrow-circle-o-down"></i> Emergency Land</button>
                         </div>
-                        <div class="col-6">
-                            <button type="button" :disabled="!controlsEnabled" v-on:click="loadBattery" class="btn btn-info btn-block"><i class="fa fa-battery-full"></i> Load Full Battery</button>
-                        </div>
+                    <div class="col-6">
+                                                    <button type="button" :disabled="!controlsEnabled" v-on:click="lockProps" class="btn btn-warning btn-block"><i class="fa fa-ban"></i> Lock Propellers</button>
+
+                    </div>
                     </div>
                     
                     
                 </div>
-                <div class="col-4">
+                <div class="col-5">
                     <div class="row">
                         <div class="col-12">
                             <div class="input-group">

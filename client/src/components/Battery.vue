@@ -1,5 +1,5 @@
 <template>
-    <radial-gauge v-model="voltage" v-bind:options="gaugeOptions"></radial-gauge>
+    <radial-gauge v-model="battery" v-bind:options="gaugeOptions"></radial-gauge>
 </template>
 <script>
     import RadialGauge from 'vue-canvas-gauges/src/RadialGauge';
@@ -7,14 +7,14 @@
         mqtt: {
             'telemetry': function(val) {
                 var telemetry = JSON.parse(val.toString());
-                this.voltage = telemetry.voltage;
+                this.battery = this.calculateLife(telemetry.voltage, telemetry.altitude) * 100;
             }
         },
         data: function() {
             return {
-                voltage: 0,
+                battery: 0,
                 gaugeOptions: {
-                    title: 'Battery Capacity',
+                    title: 'Battery Life',
                     colorTitle: '#eee',
                     colorNumbers: '#eee',
                     colorUnits: '#eee',
@@ -57,6 +57,28 @@
                     colorBorderInner: '#111',
                     colorBorderInnerEnd: '#333'
                 }
+            }
+        },
+        methods: {
+            // Based on the voltage curves that Seaver provided, calculate the remaining power.
+            // Consider whether we're flying or landed, and the current voltage draw.
+            calculateLife: function(voltage, altitude) {
+                var voltage_cell = voltage / 4;
+                var lifeRemaining; // value from 0 to 1 of percent battery remaining.
+                if (altitude < 1) {
+                    if (voltage_cell > 3.57) {
+                        lifeRemaining = 5.73 * Math.pow(voltage_cell, 3) - 69.114 * Math.pow(voltage_cell, 2) + 278.35 * voltage_cell - 373.41;
+                    } else {
+                        lifeRemaining = 0.2112 * voltage_cell - 0.5751;
+                    }
+                } else {
+                    if (voltage_cell > 3.62) {
+                        lifeRemaining = 2.9785 * Math.pow(voltage_cell, 3) - 37.052 * Math.pow(voltage_cell, 2) + 154.47 * voltage_cell - 214.82;
+                    } else {
+                        lifeRemaining = 0.1804 * voltage_cell - 0.5175;
+                    }
+                }
+                return lifeRemaining;
             }
         },
         components: {

@@ -28,11 +28,18 @@
 import $ from 'jquery';
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
+import 'datatables.net-buttons-bs4';
+import 'datatables.net-buttons/js/buttons.html5';
+import 'datatables.net-colreorder';
 $.fn.dataTable.ext.errMode = 'throw';
 
 export default {
     mounted: function() {
         this.dt = $('#recordsTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             ajax: {
                 url: '/api/telemetry',
                 dataSrc: ''

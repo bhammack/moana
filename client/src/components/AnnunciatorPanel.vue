@@ -14,7 +14,7 @@
 
                 this.heatDetected = (telemetry.lux > this.luxThreshold);
                 this.grounded = !(telemetry.altitude > 0);
-                this.voltage = telemetry.voltage;
+                this.voltage = telemetry.voltage / 4; // display the cell voltage
                 // TODO: parse the status codes
             },
             'lux': function(val) {
