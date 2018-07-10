@@ -78,6 +78,14 @@
                         lifeRemaining = 0.1804 * voltage_cell - 0.5175;
                     }
                 }
+
+                // Force the life remaining to be between 0 and 1.
+                if (lifeRemaining < 0) {
+                    lifeRemaining = 0;
+                } else if (lifeRemaining > 1) {
+                    lifeRemaining = 1;
+                }
+
                 return lifeRemaining;
             }
         },
