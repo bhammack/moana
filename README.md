@@ -13,3 +13,8 @@ $ npm install
 $ npm run build 
 $ npm start
 ```
+
+### Notes
+Some final comments as I wrap up the project
+* Used PM2 as a Node-driven process manager for starting/stopping/updating the server on ec2
+* Used Nginx as a reverse proxy
